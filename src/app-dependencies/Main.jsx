@@ -4,16 +4,16 @@ import axios from 'axios'
 export default class Main extends Component {
   
   post = () => {
-    axios.post('http://localhost:5000/users/add', {email: 'sakfsa@gmail.com', passowrd: 'secasfsafs'})
-    .then(res => console.log(res))
-    .catch(err => console.log(err.response))
+    axios.post('/user/register', {email: 'sakfssa@gmail.com', password: 'secasfsafs'})
+    .then(res => console.log(res.data))
+    .catch(err => console.log(err.response.data))
   }
 
   render() {
     return (
       <div className="main-wrap">
         <button
-          onClick={this.post()}
+          onClick={this.post}
         >
           click.
         </button>
