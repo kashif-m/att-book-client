@@ -1,0 +1,39 @@
+html, body, #react-app {
+  margin: 0;
+}
+
+#react-app {
+  height: 100vh;
+}
+
+.app-wrap {
+  height: 100%;
+  background-color: whitesmoke;
+
+  display: grid;
+  grid-template-rows: 60vh 40vh;
+}
+
+/* navigation bar */
+.nav-wrap {
+  background-image: url('../images/main');
+  /* background-repeat: no-repeat; */
+  background-size: cover;
+  background-color: #3b37377c;
+  color: black;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* footer */
+.footer-wrap {
+  background-color: #201818;
+  color: white;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
