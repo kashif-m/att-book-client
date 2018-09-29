@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 export default class Navbar extends Component {
 
@@ -6,39 +7,59 @@ export default class Navbar extends Component {
     super(props)
 
     this.state = {
-      popupSignUp: false,
-      popupLogin: false
+      popup: false
     }
   }
 
-  signUp = () => {
-    this.setState({
-      popup
+  popup = () => {
+    console.log('safs')
+    this.setState(state => {
+      return {
+        popup: !state.popup
+      }
     })
   }
 
-  login = () => {
-    console.log('safsa')
+  submit = (event) => {
+    event.preventDefault()
   }
 
   render() {
+
     return (
-      <div className="nav-wrap">
-        <div>
-          <div> ONE LINERS </div>
-          <div> ONE LINER AGAIN. </div>
+      <ReactCSSTransitionGroup
+        component="div"
+        className="nav-wrap"
+        transitionName="login-popup"
+        transitionEnterTimeout={250}
+        transitionLeaveTimeout={250}
+      >
+        <div className="heading" >
+          <div className="main-heading"> ATTENDANCE NOTEBOOK </div>
+          <div className="sub-heading">  </div>
         </div>
 
-        <div className="buttons">
-          <button className="log-in" onClick={this.signUp} > LOG IN </button>
-          <button className="sign-up" onClick={this.login} > SIGN UP </button>
-        </div>
+        <img className="user-icon" src={require('../images/user.svg')}
+          alt="user-img" onClick={this.popup}/>
 
         {
-
+          this.state.popup
+          ?
+          <div className="login-popup-wrap">
+            <button className="close-login-popup" onClick={this.popup}>x</button>
+            <form onSubmit={this.submit} >
+              <input type="text"
+                placeholder="E-mail"
+                ref={(node) => this.email = node}/>
+              <input type="password"
+                placeholder="Password"
+                ref={(node) => this.password = node}/>
+            </form>
+          </div>
+          :
+          null
         }
-
-      </div>
+      </ReactCSSTransitionGroup>
     )
   }
 }

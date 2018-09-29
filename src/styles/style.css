@@ -9,6 +9,12 @@
 }
 
 
+/* USER DEFINED */
+.none {
+  display: none;
+}
+
+
 html, body, #react-app {
   margin: 0;
 }
@@ -22,36 +28,87 @@ html, body, #react-app {
   background-color: whitesmoke;
 
   display: grid;
-  grid-template-rows: 100fr 7fr;
+  grid-template-rows: 1fr max-content;
 }
 
 /* navigation bar */
 .nav-wrap {
-  background-image: url('../images/main.jpg');
+  background-image: url(../images/darktable_exported/clipboard.jpg);
   background-size: cover;
-  color: black;
-  font-family: openSansBold;
-  font-size: 10vh;
 
+  color: rgb(14, 11, 11);
+  font-family: openSansBold;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 50% 50%;
+
+  overflow: hidden;
+}
+.heading {
+  grid-column: 1 / -1;
+  grid-row: 1 / 2;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-}
-.sign-up, .log-in {
-  border: 4px solid rgb(51, 42, 42);
-  font-family: PTSans;
-  font-size: 6vh;
-  color: rgb(51, 42, 42);
-  background-color: rgba(255, 255, 255, 0);
 
-  margin: 1rem;
-  transition: all 0.25s;
+  margin: 2rem;
 }
-.sign-up:hover, .log-in:hover {
-  border-color: rgb(156, 152, 74);
-  color: rgb(156, 152, 74);
-  transition: all 0.25s;
+.main-heading {
+  font-size: 8vh;
+  letter-spacing: .1px;
+  line-height: 60px;
+}
+.sub-heading {
+  font-size: 4vh;
+  margin: 1rem 0 0 2rem;
+}
+.user-icon {
+  grid-column: 1 / -1;
+  grid-row: 1 / 2;
+
+  justify-self: flex-end;
+  align-self: flex-start;
+
+  margin: 20px 20px 0 0;
+  height: 50px;
+
+  cursor: pointer;
+}
+
+/* NAVBAR ANIMATIONS */
+.login-popup-wrap {
+  grid-column: 4 / -1;
+  grid-row: 1 / 3;
+
+  background-color: red;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 50px 200px;
+}
+.login-wrap > input {
+  border: 0;
+  background-color: whitesmoke;
+}
+.login-wrap > form {
+  grid-column: 1 / -1;
+}
+
+
+.login-popup-enter {
+  transform: translateX(120%);
+}
+.login-popup-enter.login-popup-enter-active {
+  transform: translateX(0%);
+  transition: all .25s;
+}
+
+.login-popup-leave {
+  transform: translateX(0%);
+}
+.login-popup-leave.login-popup-leave-active {
+  transform: translateX(120%);
+  transition: all .25s;
 }
 
 
@@ -63,4 +120,19 @@ html, body, #react-app {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+
+
+
+
+/* MOBILE rules */
+@media only screen and (max-width: 600px) {
+  .user-icon {
+    margin: 8px 8px 0 0;
+    height: 40px;
+  }
+  .login-popup-wrap {
+    grid-column: 1 / -1;
+  }
 }
