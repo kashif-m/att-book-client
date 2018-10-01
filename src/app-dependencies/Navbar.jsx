@@ -1,31 +1,34 @@
 import React, { Component } from 'react'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
+import Popup from './popup/Popup'
+
 export default class Navbar extends Component {
 
   constructor(props) {
     super(props)
 
     this.state = {
-      popup: false
+      popup: false,
+      state: ''
     }
   }
 
-  popup = () => {
-    console.log('safs')
+  popup = (data) => {
     this.setState(state => {
       return {
         popup: !state.popup
       }
     })
-  }
-
-  submit = (event) => {
-    event.preventDefault()
+    if(typeof data === 'string')
+      this.props.updateToken(data)
   }
 
   render() {
 
+    var signup = 'signup-button'
+    var login = 'login-button'
+    const props = this.props
     return (
       <ReactCSSTransitionGroup
         component="div"
@@ -42,22 +45,17 @@ export default class Navbar extends Component {
         <img className="user-icon" src={require('../images/user.svg')}
           alt="user-img" onClick={this.popup}/>
 
+        <div className="button-section">
+          <button className={signup} onClick={() => this.popup('signup')} >SIGNUP</button>
+          <button className={login} onClick={() => this.popup('login')} >LOGIN</button>
+        </div>
+
         {
-          this.state.popup
-          ?
-          <div className="login-popup-wrap">
-            <button className="close-login-popup" onClick={this.popup}>x</button>
-            <form onSubmit={this.submit} >
-              <input type="text"
-                placeholder="E-mail"
-                ref={(node) => this.email = node}/>
-              <input type="password"
-                placeholder="Password"
-                ref={(node) => this.password = node}/>
-            </form>
-          </div>
-          :
-          null
+          this.state.popup ? <Popup popup={this.popup}
+                                    wait={this.props.wait}
+                                    state={this.state.state}
+                              />
+                           : null
         }
       </ReactCSSTransitionGroup>
     )

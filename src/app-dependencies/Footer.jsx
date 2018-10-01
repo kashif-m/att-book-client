@@ -4,7 +4,7 @@ export default () => {
   
   return (
     <div className="footer-wrap">
-      Footer.
+      Footer AF.
     </div>
   )
 }
