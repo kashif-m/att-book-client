@@ -1,0 +1,33 @@
+/* fonts */
+@font-face {
+  font-family: unanimo;
+  src: url('../fonts/Unanimous\ Inverted\ BRK.ttf');
+}
+@font-face {
+  font-family: openSansBold;
+  src: url('../fonts/Open_Sans_Condensed/OpenSansCondensed-Bold.ttf');
+}
+@font-face {
+  font-family: openSansLight;
+  src: url('../fonts/Open_Sans_Condensed/OpenSansCondensed-Light.ttf');
+}
+@font-face {
+  font-family: PTSansBold;
+  src: url('../fonts/PT_Sans_Narrow/PT_Sans-Narrow-Web-Bold.ttf')
+}
+@font-face {
+  font-family: PTSans;
+  src: url('../fonts/PT_Sans_Narrow/PT_Sans-Narrow-Web-Regular.ttf');
+}
+
+
+body {
+  margin: 0;
+}
+
+.app-wrap {
+
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-auto-rows: auto;
+}

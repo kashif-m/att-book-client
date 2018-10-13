@@ -1,9 +1,13 @@
 import React from 'react'
 import axios from 'axios'
 
-import Footer from './app-dependencies/Footer'
-import Main from './app-dependencies/Main'
-import Navbar from './app-dependencies/Navbar'
+// UDTs
+import Footer from './app-content/Footer'
+import Header from './app-content/Header'
+import Welcome from './app-content/Welcome'
+
+// css
+import './styles/App.css'
 
 class App extends React.Component {
 
@@ -27,6 +31,7 @@ class App extends React.Component {
     })
     const data = window.localStorage.getItem('att-book-user')
     const result = await this.getUser(data)
+
     if(result !== 'Unauthorized')
       this.setState({
         token: data,
@@ -65,21 +70,9 @@ class App extends React.Component {
   render() {
     return (
       <div className="app-wrap">
+        <Header />
         {
-          this.state.token
-          ?
-          <Main token={this.state.token} wait={this.wait} />
-          :
-          <Navbar updateToken={this.updateToken}
-              token={this.state.token}
-              wait={this.wait} />
-        }
-        <Footer />
-        {
-          this.state.wait
-          ?
-          <div className="wait"></div>
-          : null
+          this.state.token.length === 0 ? <Welcome /> : null
         }
       </div>
     )
