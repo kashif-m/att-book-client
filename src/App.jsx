@@ -32,6 +32,7 @@ class App extends React.Component {
     const data = window.localStorage.getItem('att-book-user')
     const result = await this.getUser(data)
 
+    console.log(result)
     if(result !== 'Unauthorized')
       this.setState({
         token: data,
@@ -70,7 +71,6 @@ class App extends React.Component {
   render() {
     return (
       <div className="app-wrap">
-        <Header />
         {
           this.state.token.length === 0 ? <Welcome /> : null
         }

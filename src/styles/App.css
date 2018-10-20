@@ -1,5 +1,9 @@
 /* fonts */
 @font-face {
+  font-family: pacmania;
+  src: url('../fonts/Pacmania.ttf');
+}
+@font-face {
   font-family: unanimo;
   src: url('../fonts/Unanimous\ Inverted\ BRK.ttf');
 }
@@ -18,6 +22,16 @@
 @font-face {
   font-family: PTSans;
   src: url('../fonts/PT_Sans_Narrow/PT_Sans-Narrow-Web-Regular.ttf');
+}
+@font-face {
+  font-family: sigmarOne;
+  src: url('../fonts/SigmarOne-Regular.ttf');
+}
+
+
+/*  */
+.none { 
+  display: none;
 }
 
 
