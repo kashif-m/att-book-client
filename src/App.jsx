@@ -2,8 +2,7 @@ import React from 'react'
 import axios from 'axios'
 
 // UDTs
-import Footer from './app-content/Footer'
-import Header from './app-content/Header'
+import Dashboard from './app-content/Dashboard'
 import Welcome from './app-content/Welcome'
 
 // css
@@ -72,7 +71,7 @@ class App extends React.Component {
     return (
       <div className="app-wrap">
         {
-          this.state.token.length === 0 ? <Welcome /> : null
+          this.state.token.length === 0 ? <Welcome updateToken={this.updateToken} /> : <Dashboard />
         }
       </div>
     )

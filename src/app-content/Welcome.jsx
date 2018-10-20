@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import CSSTransitionGroup from 'react-addons-css-transition-group'
+import axios from 'axios'
 
 // css
 import '../styles/Welcome.css'
-
-// UDTs
-import Login from './Login'
-import Register from './Register'
 
 export default class Welcome extends Component {
 
@@ -15,16 +12,51 @@ export default class Welcome extends Component {
 
     this.state = {
       showPopup: false,
-      popupState: ''
+      popupState: '',
+      validationErrors: {},
+      generalError: {}
     }
   }
 
-  popup = (state) => {
-    this.setState((prevState) => {
-      return {
-        showPopup: !prevState.showPopup,
-        popupState: state
-      }
+  popup = (state, popup) => {
+    console.log(popup)
+    this.setState({
+      showPopup: popup ? popup : true,
+      popupState: state,
+      validationErrors: {},
+      generalError: {}
+    })
+  }
+
+  submit = (submission) => {
+
+    this.clearErrors()
+    const data = {
+      email: this.email.value,
+      password: this.password.value
+    }
+
+    axios
+      .post(`/user/${submission}`, data)
+      .then(res => {
+        if(submission === 'register')
+          return this.setState({popupState: 'success'})
+        
+        this.props.updateToken(res.data.token)
+      })
+      .catch(err => {
+        const errors = err.response.data
+        this.setState({
+          validationErrors: errors.msg ? {} : errors,
+          generalError: errors.msg ? errors : {}
+        })
+      })
+  }
+
+  clearErrors = () => {
+    this.setState({
+      validationErrors: {},
+      generalError: {}
     })
   }
   
@@ -46,27 +78,121 @@ export default class Welcome extends Component {
           component="div"
           transitionName="popup"
           transitionEnterTimeout={500}
-          transitionLeaveTimeout={500}
-        >
+          transitionLeaveTimeout={500}>
+          {/* button-section */}
           <div className="buttons">
-            <button className="login" onClick={() => this.popup('login')} >LOGIN</button>
-            <button className="register" onClick={() => this.popup('register')} >REGISTER</button>
+            <button className="login"
+              onClick={() => this.popup('login', true)}>LOGIN</button>
+            <button className="register"
+              onClick={() => this.popup('register', true)}>REGISTER</button>
           </div>
+
+          {/* popup */}
           {
             this.state.showPopup
             ?
             <div className="popup">
-              <img src={require('../images/close.svg')} alt="x" className="close-popup" onClick={() => this.setState({showPopup: false})}/>
-              <div className="popup-buttons">
-                <button className={loginButton} onClick={() => this.setState({popupState: 'login'})} >LOGIN</button>
-                <button className={registerButton} onClick={() => this.setState({popupState: 'register'})} >REGISTER</button>
-              </div>
+              <img
+                src={require('../images/close.svg')}
+                alt="x" className="close-popup"
+                onClick={() => this.setState({showPopup: false})}/>
+              {/* general-error */}
+              {
+                this.state.generalError.msg &&
+                <div className="general-error">
+                  <img src={require('../images/close-err.svg')}
+                    alt="x" className="close-err"
+                    onClick={() => this.setState({generalError: {}})}/>
+                  <span className="error">{this.state.generalError.msg}</span>
+                </div>
+              }
+              {/* popup-buttons (nav) */}
+              {
+                this.state.popupState === 'login' || this.state.popupState === 'register'
+                ?
+                <div className="popup-buttons">
+                  <button
+                    className={loginButton}
+                    onClick={() => this.popup('login')}>LOGIN</button>
+                  <button
+                    className={registerButton}
+                    onClick={() => this.popup('register')}>REGISTER</button>
+                </div>
+                :
+                null
+              }
+              {/* login/register */}
               {
                 this.state.popupState === 'login'
                 ?
-                <Login />
+                <div className="login-section">
+                  <div className="email-section">
+                    <input type="text"
+                      placeholder="Registered E-Mail"
+                      ref={node => this.email = node}
+                    />
+                    {
+                      this.state.validationErrors.email &&
+                      (
+                        <div className="email-error">{this.state.validationErrors.email}</div>
+                      )
+                    }
+                  </div>
+                  <div className="password-section">
+                    <input type="password"
+                      placeholder="Password"
+                      ref={node => this.password = node}
+                    />
+                    {
+                      this.state.validationErrors.password &&
+                      (
+                        <div className="password-error">{this.state.validationErrors.password}</div>
+                      )
+                    }
+                  </div>
+                  <img src={require('../images/continue.svg')} alt="->" className="submit" onClick={() => this.submit('login')} />
+                </div>
                 :
-                <Register />
+                this.state.popupState === 'register'
+                ?
+                <div className="register-section">
+                  <div className="email-section">
+                    <input type="text"
+                      placeholder="E-mail"
+                      ref={node => this.email = node}/>
+                    {
+                      this.state.validationErrors.email &&
+                      (
+                        <div className="email-error">{this.state.validationErrors.email}</div>
+                      )
+                    }
+                  </div>
+                  <div className="password-section">
+                    <input type="password"
+                      placeholder="Password"
+                      ref={node => this.password = node}/>
+                    {
+                      this.state.validationErrors.password &&
+                      (
+                        <div className="password-error">{this.state.validationErrors.password}</div>
+                      )
+                    }
+                  </div>
+                  <img src={require('../images/continue.svg')} alt="->" className="submit" onClick={() => this.submit('register')} />
+                </div>
+                :
+                null
+              }
+              {/* success */}
+              {
+                this.state.popupState === 'success'
+                ?
+                <div className="success">
+                  Successfully registered.
+                  Click <a onClick={() => this.setState({popupState: 'login'})}>here</a> to login.
+                </div>
+                :
+                null                
               }
             </div>
             : null
