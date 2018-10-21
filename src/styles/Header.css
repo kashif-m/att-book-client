@@ -1,0 +1,40 @@
+
+.header-wrap {
+  grid-column: 1 / -1;
+  grid-row: 1 / 2;
+
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  background: linear-gradient(to bottom, white, whitesmoke 90%);
+
+  /* margin-bottom: 20px; */
+  /* box-shadow: #df2935 0 10px 100px 10px; */
+}
+
+.logo {
+  height: 50px;
+
+  cursor: pointer;
+}
+
+.power {
+  height: 30px;
+
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+/* media queries */
+@media only screen and (max-width: 500px) {
+  .logo, .power {
+    height: 30px;
+  }
+}

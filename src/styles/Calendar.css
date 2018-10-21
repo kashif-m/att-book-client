@@ -1,0 +1,142 @@
+
+.calendar-wrap {
+  height: 100%;
+}
+
+
+/* header */
+.calendar-header {
+  padding-left: 20px;
+  display: grid;
+  grid-gap: 40px;
+  grid-template-columns: min-content minmax(200px, 10vw) min-content;
+}
+.month {
+  font-family: PTSansBold;
+  font-size: 50px;
+  align-self: center;
+  justify-self: center;
+
+  color: #080708;
+}
+.prev, .next {
+  cursor: pointer;
+  height: 40px;
+  align-self: center;
+  justify-self: flex-end;
+}
+
+
+/* body */
+.calendar-body {
+  margin: 100px 0 0 50px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: 1fr auto;
+  min-width: 800px;
+  max-width: 1000px;
+}
+
+/* days wrap */
+.days-wrap {
+  grid-column: 2 / -1;
+
+  display: grid;
+  grid-auto-flow: column;
+
+  font-family: PTSansBold;
+  font-size: 30px;
+
+  margin-bottom: 40px;
+}
+.day {
+  justify-self: center;
+  margin: 0 20px 0 20px;
+}
+
+
+
+/* weeks wrap */
+.weeks-wrap {
+  grid-row: 2 / 3;
+  justify-self: center;
+
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+
+  font-family: PTSansBold;
+  font-size: 40px;
+
+  margin-right: 50px;
+}
+.week {
+  margin: 20px;
+}
+.week-number {
+  align-self: center;
+  justify-self: flex-start;
+  font-family: PTSansBold;
+  font-size: 30px;
+  margin-bottom: 40px;
+}
+
+
+
+
+
+
+
+/* cells wrap */
+.cells-wrap {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+
+}
+.cells-wrap .Sunday {
+  grid-column: 1 / 2;
+
+  background-color: red;
+  color: white;
+  border-color: red;
+}
+.cells-wrap .Monday {
+  grid-column: 2 / 3;
+}
+.cells-wrap .Tuesday {
+  grid-column: 3 / 4;
+}
+.cells-wrap .Wednesday {
+  grid-column: 4 / 5;
+}
+.cells-wrap .Thursday {
+  grid-column: 5 / 6;
+}
+.cells-wrap .Friday {
+  grid-column: 6 / 7;
+}
+.cells-wrap .Saturday {
+  grid-column: 7 / 8;
+}
+.cell {
+  align-self: center;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 40px;
+  width: 40px;
+  font-size: 25px;
+  font-family: PTSansBold;
+  border-radius: 50px;
+  border: 2px solid #280000;
+
+  cursor: pointer;
+}
+.cell.active {
+  
+  color: white;
+  background-color: #279af1;
+  border-color: #279af1;
+}

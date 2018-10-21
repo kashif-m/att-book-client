@@ -29,13 +29,36 @@
 }
 
 
-/*  */
+/* UD */
 .none { 
   display: none;
+}
+.wait-wrap {
+  position: absolute;
+  top: 0;
+}
+.wait {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.384), white 20%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* wait animation */
+.wait-anim-leave {
+  transform: translateY(0);
+}
+.wait-anim-leave.wait-anim-leave-active {
+  transform: translateY(-120vh);
+  transition: all .5s;
 }
 
 
 body {
+  overflow: hidden;
   margin: 0;
 }
 

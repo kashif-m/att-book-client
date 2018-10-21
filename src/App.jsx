@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import CSSTransitionGroup from 'react-addons-css-transition-group'
 
 // UDTs
 import Dashboard from './app-content/Dashboard'
@@ -25,13 +26,16 @@ class App extends React.Component {
   }
 
   async componentDidMount() {
+    
+    const data = window.localStorage.getItem('att-book-user')
+    if(data.length === 0)
+      return
+
     this.setState({
       wait: true
     })
-    const data = window.localStorage.getItem('att-book-user')
     const result = await this.getUser(data)
 
-    console.log(result)
     if(result !== 'Unauthorized')
       this.setState({
         token: data,
@@ -70,8 +74,23 @@ class App extends React.Component {
   render() {
     return (
       <div className="app-wrap">
+        <CSSTransitionGroup
+          className="wait-wrap"
+          component="div"
+          transitionName="wait-anim"
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={500}
+        >
+          {
+            this.state.wait && (<div className="wait">LOADING</div>)
+          }
+        </CSSTransitionGroup>
         {
-          this.state.token.length === 0 ? <Welcome updateToken={this.updateToken} /> : <Dashboard />
+          this.state.token.length === 0
+          ?
+          <Welcome updateToken={this.updateToken} />
+          :
+          <Dashboard user={this.state.user} />
         }
       </div>
     )

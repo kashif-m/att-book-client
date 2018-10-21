@@ -19,7 +19,6 @@ export default class Welcome extends Component {
   }
 
   popup = (state, popup) => {
-    console.log(popup)
     this.setState({
       showPopup: popup ? popup : true,
       popupState: state,
@@ -67,7 +66,7 @@ export default class Welcome extends Component {
     return (
       <div className="welcome-wrap" >
         <div className="main-cover">
-          <img className="logo" src={require('../images/spiral_top.svg')} alt="LOGO."/>
+          <img className="spiral" src={require('../images/spiral_top.svg')} alt="LOGO"/>
           <span className="heading" >
             ATTENDANCE NOTEBOOK
           </span>        
