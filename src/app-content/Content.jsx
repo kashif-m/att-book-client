@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 // UDTs
 import Calendar from './Calendar'
+import Timetable from './Timetable';
 
 export default class Content extends Component {
   render() {
@@ -13,6 +14,10 @@ export default class Content extends Component {
           state === 'today'
           ?
           <Calendar />
+          :
+          state === 'timetables'
+          ?
+          <Timetable />
           :
           null
         }
