@@ -39,16 +39,16 @@ export default class Timetable extends Component {
   }
 
   handleChange = (event, i) => {
-    
+
     const timetable = {...this.state.timetable}
     timetable[this.state.popupAddSubject.day] = timetable[this.state.popupAddSubject.day] || {}
-    
+
     const classes = {...timetable[this.state.popupAddSubject.day.classes]}    
     const subject = event.target.value
     classes[i] = {
       subject
     }
-    
+
     timetable[this.state.popupAddSubject.day][i] = classes[i]
     this.setState({
       timetable
@@ -66,7 +66,7 @@ export default class Timetable extends Component {
           i = Object.keys(timetable[popupAddSubject.day]).length
           subjects = parseInt(subjects) + i
         }
-        
+
     for(; i < subjects; i++) {
       const cloneI = i
       input.push(
@@ -149,9 +149,9 @@ export default class Timetable extends Component {
 
     return <div className="input-row-wrap">{cells}</div>
   }
-  
+
   render() {
-  
+
     const addTimetableClass = this.state.showTTPopup ? 'add-timetable popup-active' : 'add-timetable'
     return (
       <div className="timetable-wrap">
