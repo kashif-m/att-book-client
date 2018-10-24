@@ -34,6 +34,8 @@ export default class Dashboard extends Component {
         />
         <Content
           contentState={this.state.contentState}
+          user={this.props.user}
+          token={this.props.token}
         />
       </div>
     )

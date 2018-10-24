@@ -17,7 +17,9 @@ export default class Content extends Component {
           :
           state === 'timetables'
           ?
-          <Timetable />
+          <Timetable
+            token={this.props.token}
+          />
           :
           null
         }

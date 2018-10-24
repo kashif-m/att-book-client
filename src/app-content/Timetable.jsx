@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 
 // css
 import '../styles/Timetable.css'
@@ -75,11 +76,41 @@ export default class Timetable extends Component {
           type="text"
           placeholder={`Subject ${i+1}`}
           onChange={(event) => this.handleChange(event, cloneI+1)}
+          onKeyDown={key => {
+            if(key.keyCode === 13 && cloneI === subjects - 1)
+              this.handleContinue()
+          }}
         />
       )
     }
 
     return <div className="input-wrap">{input}</div>
+  }
+
+  getAcronym = (val) => {
+    const arr = val.split(' ')
+    if(arr.length < 2)
+      return val.substr(0, 2)
+
+    else
+      return arr[0].charAt(0) + arr[1].charAt(0)
+  }
+
+  handleContinue = () => {
+    this.setState(prevState => {
+      if(prevState.popupAddSubject.status === 2)
+        return {
+          popupAddSubject: {}
+        }
+      else
+        return {
+          popupAddSubject: {
+            day: prevState.popupAddSubject.day,
+            new: prevState.popupAddSubject.new,
+            status: prevState.popupAddSubject.status + 1
+          }
+        }
+    })
   }
 
   renderInputRows = () => {
@@ -88,28 +119,73 @@ export default class Timetable extends Component {
 
     for(let i = 0; i < daysList.length; i++) {
 
-      const day = daysList[i]
+      let day = daysList[i]
       cells.push(
         <div
-        className={`row-wrap ${daysList[i]}`}
-        key={i}
+          className={`row-wrap ${daysList[i]}`}
+          key={i}
         >
+          {
+            this.state.timetable[day] &&
+            Object.keys(this.state.timetable[day]).length !== 0
+            ?
+            Object
+              .keys(this.state.timetable[day])
+              .map(key =>
+                <div
+                  className="subject-name"
+                  key={key}
+                >
+                  {
+                    this.getAcronym(this.state.timetable[day][key].subject)
+                  }
+                </div>
+              )
+            :
+            null
+          }
           {
             Object.keys(this.state.popupAddSubject).length !== 0 && this.state.popupAddSubject.day === day
             ?
             <div className="add-subject-popup">
               <img src={require('../images/close.svg')} alt="x" onClick={() => this.setState({popupAddSubject: {}})} className="close" />
-              {day}
-              {console.log(day)}
+              <span className="add-subject-day">
+                Classes on <br/>
+                {day}
+              </span>
               {
                 this.state.popupAddSubject.status === 1
                 ?
-                <input
-                  type="number"
-                  placeholder="Classes"
-                  defaultValue={1}
-                  ref={node => this.day = node}
-                />
+                <div className="add-subject-classes-wrap">
+                  <div className="classes-wrap">
+                    <button
+                      className="add-subject-sub-classes"
+                      onClick={() => {
+                        this.day.value = parseInt(this.day.value) - 1
+                      }}
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      defaultValue={1}
+                      ref={node => this.day = node}
+                      onKeyDown={key => {
+                        if(key.keyCode === 13)
+                          this.handleContinue()
+                      }}
+                    />
+                    <button
+                      className="add-subject-add-classes"
+                      onClick={() => {
+                        this.day.value = parseInt(this.day.value) + 1
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
+                  <label className="classes-label">Total number of classes</label>
+                </div>
                 :
                 this.state.popupAddSubject.status === 2
                 ?
@@ -120,15 +196,7 @@ export default class Timetable extends Component {
               <img
                 src={require('../images/continue.svg')}
                 alt="continue" className="continue"
-                onClick={() => this.setState(prevState => {
-                  return {
-                    popupAddSubject: {
-                      day: prevState.popupAddSubject.day,
-                      new: prevState.popupAddSubject.new,
-                      status: prevState.popupAddSubject.status + 1
-                    }
-                  }
-                })}
+                onClick={this.handleContinue}
               />
             </div>
             :
@@ -148,6 +216,21 @@ export default class Timetable extends Component {
     }
 
     return <div className="input-row-wrap">{cells}</div>
+  }
+
+
+  submit = () => {
+    const timetable = this.state.timetable
+    console.log()
+    axios
+      .post('http://localhost:5000/timetable/add', timetable,
+        {
+          headers: {
+            'Authorization': this.props.token
+          }
+      })
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err.response.data))
   }
 
   render() {
@@ -174,7 +257,17 @@ export default class Timetable extends Component {
               {this.renderDays()}
               {this.renderInputRows()}
             </div>
-            <button className="save-button">SAVE</button>
+            <div className="save-as-wrap">
+              <span>Save As</span>
+              <input
+                type="text"
+                defaultValue="Timetable1"
+              />
+            </div>
+            <button
+              className="save-button"
+              onClick={this.submit}
+            >SAVE</button>
           </div>
           :
           null

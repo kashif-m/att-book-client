@@ -90,7 +90,10 @@ class App extends React.Component {
           ?
           <Welcome updateToken={this.updateToken} />
           :
-          <Dashboard user={this.state.user} />
+          <Dashboard
+            user={this.state.user}
+            token={this.state.token}
+          />
         }
       </div>
     )

@@ -87,8 +87,8 @@
 
   width: 50%;
 
-  background-color: whitesmoke;
-  box-shadow: rgb(114, 114, 114) 0 200px 100px;
+  background-color: #fbfffe;
+  box-shadow: #998888 0 200px 100px;
 
   display: grid;
   grid-template-columns: 2fr 2fr 1fr;
@@ -128,7 +128,7 @@
 }
 .active {
   background-color: rgb(36, 36, 36);
-  color: whitesmoke;
+  color: #fbfffe;
 
   transition: all .25s ease;
 }
@@ -168,7 +168,7 @@
 
   align-self: flex-start;
   padding: 10px;
-  background-color: whitesmoke;
+  background-color: #fbfffe;
 
   font-size: 17px;
 }
@@ -182,10 +182,9 @@
 }
 
 
-
 /* errors */
 .email-error, .password-error {
-  color: #e92419;
+  color: #fb3640;
 }
 .password-error {
   max-width: 220px;
@@ -203,8 +202,8 @@
 }
 .general-error .error {
   align-self: center;
-  background-color: #BC0000;
-  color: whitesmoke;
+  background-color: #fb3640;
+  color: #fbfffe;
   font-size: 20px;
   font-family: PTSansBold;
   padding: 0 8px 0 8px;

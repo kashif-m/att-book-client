@@ -141,6 +141,10 @@ export default class Welcome extends Component {
                     <input type="password"
                       placeholder="Password"
                       ref={node => this.password = node}
+                      onKeyDown={(key) => {
+                        if(key.keyCode === 13)
+                          this.submit('login')
+                      }}
                     />
                     {
                       this.state.validationErrors.password &&
@@ -169,7 +173,12 @@ export default class Welcome extends Component {
                   <div className="password-section">
                     <input type="password"
                       placeholder="Password"
-                      ref={node => this.password = node}/>
+                      ref={node => this.password = node}
+                      onKeyDown={(key) => {
+                        if(key.keyCode === 13)
+                          this.submit('register')
+                      }}
+                    />
                     {
                       this.state.validationErrors.password &&
                       (

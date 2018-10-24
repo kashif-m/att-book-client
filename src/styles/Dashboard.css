@@ -13,7 +13,7 @@
 
 /* SIDER */
 .side-wrap {
-  background: linear-gradient(whitesmoke, white);
+  background-color: #fbfffe;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -40,7 +40,7 @@
   padding: 0 10px 0 10px;
 }
 .list .active {
-  background-color: #3772ff;
+  background-color: #008148;
 }
 
 
@@ -52,7 +52,7 @@
 
 /* CONTENT */
 .content-wrap {
-  background: linear-gradient(whitesmoke, white);
+  background-color: #fbfffe;
 
   padding: 20px;
 }

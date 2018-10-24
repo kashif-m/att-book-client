@@ -96,9 +96,9 @@
 .cells-wrap .Sunday {
   grid-column: 1 / 2;
 
-  background-color: red;
+  background-color: #fb3640;
   color: white;
-  border-color: red;
+  border-color: #fb3640;
 }
 .cells-wrap .Monday {
   grid-column: 2 / 3;
@@ -137,6 +137,6 @@
 .cell.active {
   
   color: white;
-  background-color: #279af1;
-  border-color: #279af1;
+  background-color: #008148;
+  border-color: #008148;
 }
