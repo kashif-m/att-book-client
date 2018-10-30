@@ -255,12 +255,14 @@ export default class Timetable extends Component {
     return <div className="input-row-wrap">{cells}</div>
   }
 
-
   submit = () => {
     const timetable = this.state.timetable
-    timetable.tag = document.getElementById('save_as').value
+    const data = {
+      timetable,
+      tag: document.getElementById('save_as').value
+    }
     axios
-      .post('/timetable/add', timetable,
+      .post('/timetable/add', data,
         {
           headers: {
             'Authorization': this.props.token
@@ -280,37 +282,21 @@ export default class Timetable extends Component {
     const addTimetableClass = this.state.showTTPopup ? 'add-timetable popup-active' : 'add-timetable'
     return (
       <div className="timetable-wrap">
-        <button
-          className={addTimetableClass}
-          onClick={() => this.setState({showTTPopup: true})}
-        >
-          + NEW TIMETABLE
-        </button>
+        <button className={addTimetableClass} onClick={() => this.setState({showTTPopup: true})}>+ NEW TIMETABLE</button>
         {
           this.state.showTTPopup
           ?
           <div className="tt-popup-wrap">
-            <img
-              src={require('../images/close.svg')}
-              alt="x" className="close-button"
-              onClick={() => this.setState({showTTPopup: false})}
-              />
+            <img src={require('../images/close.svg')} className="close-button"
+              alt="x" onClick={() => this.setState({showTTPopup: false})}/>
             <div className="tt-popup-content">
-              {/* {this.renderDays()} */}
               {this.renderInputRows()}
             </div>
             <div className="save-as-wrap">
               <span>Save As</span>
-              <input
-                id="save_as"
-                type="text"
-                defaultValue="Timetable1"
-              />
+              <input id="save_as" type="text" defaultValue="Timetable1" />
             </div>
-            <button
-              className="save-button"
-              onClick={this.submit}
-            >SAVE</button>
+            <button className="save-button" onClick={this.submit}>SAVE</button>
           </div>
           :
           null
