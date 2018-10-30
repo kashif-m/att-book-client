@@ -25,7 +25,12 @@ export default class Welcome extends Component {
       validationErrors: {},
       generalError: {}
     })
-  }
+
+    // autofocus on email field
+    const input = document.getElementById('email')
+    if(input)
+      input.focus()
+    }
 
   submit = (submission) => {
 
@@ -127,8 +132,10 @@ export default class Welcome extends Component {
                 <div className="login-section">
                   <div className="email-section">
                     <input type="text"
+                      id="email"
                       placeholder="Registered E-Mail"
                       ref={node => this.email = node}
+                      autoFocus={true}
                     />
                     {
                       this.state.validationErrors.email &&
@@ -161,8 +168,12 @@ export default class Welcome extends Component {
                 <div className="register-section">
                   <div className="email-section">
                     <input type="text"
+                      className="email"
+                      id="email"
                       placeholder="E-mail"
-                      ref={node => this.email = node}/>
+                      ref={node => this.email = node}
+                      autoFocus={true}
+                    />
                     {
                       this.state.validationErrors.email &&
                       (

@@ -34,6 +34,9 @@
 
 /* popup */
 .tt-popup-wrap {
+  z-index: 1;
+  position: relative;
+  top: -50px;
   grid-column: 1 / 2;
   grid-row: 1 / 2;
 
@@ -66,9 +69,11 @@
   grid-row: 2 / 3;
 }
 .popup-day {
+  grid-row: 1 / -1 !important;
   align-self: center;
   justify-self: center;
   margin: 20px;
+  width: 100px;
 
   font-family: PTSansBold;
   font-size: 30px;
@@ -82,37 +87,76 @@
   grid-column: 2 / 3;
 
   display: grid;
-  grid-template-rows: repeat(6, 1fr);
+  grid-template-rows: repeat(min-content, 1fr);
 }
 .row-wrap {
   display: flex;
-  
+  flex-flow: row;
   align-self: center;
-  /* overflow: auto; */
+}
+.row-wrap.Monday {
+  margin-top: 20px;
+}
+.subject-wrap {
+  display: grid;
+  grid-template-columns: repeat(10, min-content);
 }
 .subject-name {
+  cursor: pointer;
   height: 40px !important;
   width: 40px !important;
-  margin: 0 10px 0 10px;
+  margin: 10px;
   padding: 0;
   font-family: PTSansBold;
   font-size: 20px;
   font-weight: 900;
   color: #fbfffe;
+  align-self: center;
   display: flex;
   align-items: center;
   justify-content: center;
 
   background-color: red;
   border-radius: 100%;
+  border: 1px solid red;
+
+  transition: all 0.25s;
+}
+.subject-acronym {
+  position: absolute;
+}
+.subject-name:hover, .subject-name:focus {
+  background-color: #fbfffe;
+  color: red;
+
+  transition: all 0.25s;
+}
+.edit-subject-popup {
+  top: 38px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  box-shadow: black 0 0 60px -25px !important;
+  border-radius: 20px;
+  width: min-content !important;
+}
+#editsub {
+  z-index: 1;
+  width: 200px;
+  border: 1px solid red !important;
+  border-radius: 20px;
+  padding-left: 20px !important;
+  padding: 2px;
+  background-color: #fbfffe;
 }
 .add-subject-popup {
   align-self: center;
-  position: absolute;
+  position: fixed;
   background-color: #fbfffe;
-  box-shadow: #bbcbcb 0 40px 100px -40px, #bbcbcb 100px 100px 100px -100px, #bbcbcb -100px 100px 100px -100px;
+  box-shadow: #bbcbcb 0 50px 100px -50px, #bbcbcb 80px 80px 100px -100px, #bbcbcb -80px 80px 100px -100px;
 
-  min-width: 200px;
+  top: 150px;
+  min-width: 400px;
   display: flex;
   flex-flow: column;
 
@@ -144,10 +188,8 @@
 .classes-wrap input {
   border: 0;
   background-color: #fbfffe;
-  justify-self: center;
-  align-self: center;
+  width: 30px;
 
-  width: 15px;
   margin: 0 10px 0 10px;
   -webkit-appearance: textfield;
   -moz-appearance: textfield;
@@ -155,15 +197,24 @@
 .input-wrap {
   display: flex;
   flex-flow: column;
+  align-items: center;
+  overflow: auto;
+  max-height: 50vh;
+  margin-left: 20px;
+  padding-right: 20px;
 }
-.input-wrap input {
+.input-wrap input, .edit-subject-popup input {
   border: 0;
   font-family: PTSansBold;
-  border-bottom: 2px solid #bbcbcb;
+  border-bottom: 1px solid #bbcbcb;
   padding: 0 5px 4px 10px;
   margin-top: 20px;
+  width: 200px;
 }
-.input-wrap input:focus {
+.edit-subject-popup input {
+  margin: 0 !important;
+}
+.input-wrap input:focus, .edit-subject-popup input:focus {
   border-color: black;
   transition: all .25s;
 }
@@ -173,14 +224,14 @@
   font-family: PTSansBold;
   margin-bottom: 40px;
 }
-.close, .continue {
+.continue {
+  cursor: pointer;
   height: 30px;
   align-self: flex-end;
-}
-.continue {
   margin: 20px 0 0 0;
 }
 .add-button {
+  justify-self: center;
   align-self: center;
   margin-left: 20px;
 
@@ -197,6 +248,7 @@
 
 
 .close-button {
+  cursor: pointer;
   grid-column: -2 / -1;
   grid-row: 1 / 2;
 
@@ -204,6 +256,7 @@
   align-self: flex-end;
 }
 .save-button {
+  cursor: pointer;
   grid-column: 2 / 3;
   grid-row: -2 / -1;
 
