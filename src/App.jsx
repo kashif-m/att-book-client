@@ -28,7 +28,7 @@ class App extends React.Component {
   async componentDidMount() {
     
     const data = window.localStorage.getItem('att-book-user')
-    if(data.length === 0)
+    if(data && data.length === 0)
       return
 
     this.setState({
