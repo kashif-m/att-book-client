@@ -72,6 +72,10 @@
 }
 .week {
   margin: 20px;
+  padding: 0 10px 0 10px;
+  background-color: #080708;
+  border-radius: 4px;
+  color: whitesmoke;
 }
 .week-number {
   align-self: center;
