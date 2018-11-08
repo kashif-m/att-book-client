@@ -48,9 +48,9 @@ class App extends React.Component {
 
   getUser = (token) => {
     return axios
-      .get('http://localhost:5000/user/current', {
+      .get('/user/current', {
         headers: {
-          Authorization: token
+          'Authorization': token
         }
       })
       .then(res => res.data)

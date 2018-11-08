@@ -27,6 +27,14 @@
   font-family: sigmarOne;
   src: url('../fonts/SigmarOne-Regular.ttf');
 }
+@font-face {
+  font-family: dosisSemiBold;
+  src: url('../fonts/Dosis/Dosis-SemiBold.ttf');
+}
+@font-face {
+  font-family: latoBold;
+  src: url('../fonts/Lato/Lato-Bold.ttf');
+}
 
 
 /* UD */

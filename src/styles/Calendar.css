@@ -31,7 +31,7 @@
 .calendar-body {
   margin: 100px 0 0 50px;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: min-content auto;
   grid-template-rows: 1fr auto;
   min-width: 800px;
   max-width: 1000px;
@@ -42,8 +42,7 @@
   grid-column: 2 / -1;
 
   display: grid;
-  grid-auto-flow: column;
-
+  grid-template-columns: repeat(7, 1fr);
   font-family: PTSansBold;
   font-size: 30px;
 
@@ -51,7 +50,10 @@
 }
 .day {
   justify-self: center;
-  margin: 0 20px 0 20px;
+  background-color: #b0413e;
+  color: whitesmoke;
+  padding: 0 10px 0 10px;
+  border-radius: 3px;
 }
 
 
@@ -78,11 +80,12 @@
   color: whitesmoke;
 }
 .week-number {
+  margin-bottom: 40px;
+  margin-right: 50px;
   align-self: center;
-  justify-self: flex-start;
+  justify-self: center;
   font-family: PTSansBold;
   font-size: 30px;
-  margin-bottom: 40px;
 }
 
 
@@ -125,22 +128,64 @@
 .cell {
   align-self: center;
   justify-self: center;
-  display: flex;
+  display: grid;
+  grid-template-columns: 40px;
+  grid-template-rows: 40px;
   align-items: center;
   justify-content: center;
 
   height: 40px;
   width: 40px;
-  font-size: 25px;
-  font-family: PTSansBold;
   border-radius: 50px;
   border: 2px solid #280000;
 
   cursor: pointer;
+}
+.cell > span {
+  grid-column: 1 / 2 !important;
+  grid-row: 1 / 2 !important;
+
+  font-size: 25px !important;
+  font-family: PTSansBold;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .cell.active {
   
   color: white;
   background-color: #008148;
   border-color: #008148;
+}
+
+
+
+/* attendance popup */
+.attendance-popup {
+  grid-column: 1 / 2 !important;
+  grid-row: 1 / 2 !important;
+  cursor: auto;
+  
+  position: relative;
+  top: 10px;
+  right: 65px;
+  bottom: 0;
+
+  align-self: center;
+  color: black;
+  background-color: #fbfffe;
+  box-shadow: #bbcbcb 0 50px 100px -45px;
+  overflow: visible;
+  width: min-content;
+  padding: 10px 20px 5px 20px;
+
+  font-size: 30px;
+  font-family: openSansBold;
+}
+.popup-heading {
+  border-bottom: 2px solid black;
+}
+.attendance-row-wrap span {
+  font-size: 20px !important;
 }

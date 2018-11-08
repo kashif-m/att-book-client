@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 import dateFns from 'date-fns'
 import CSSTransitionGroup from 'react-addons-css-transition-group'
 
@@ -12,8 +13,25 @@ export default class Calendar extends Component {
 
     this.state = {
       currentMonth: new Date(),
-      selectedDate: new Date()
+      selectedDate: new Date(),
+      timetable: {},
+      dayTimetable: {}
     }
+  }
+
+  componentDidMount() {
+    this.fetchTimetable()
+  }
+
+  fetchTimetable = () => {
+    axios
+      .get('/timetable/fetch', {
+        headers: {
+          'Authorization': this.props.token
+        }
+      })
+      .then(res => res.data && this.setState({timetable: res.data}))
+      .catch(err => console.log(err.response.data))
   }
 
   prevMonth = () => {
@@ -50,7 +68,7 @@ export default class Calendar extends Component {
       days.push(
         <div className={`${dateFns.format(dateFns.addDays(startDate, i), "dddd")} day`} key={i}>
           {
-            dateFns.format(dateFns.addDays(startDate, i), "dddd")
+            dateFns.format(dateFns.addDays(startDate, i), "ddd")
           }
         </div>
       )
@@ -81,6 +99,25 @@ export default class Calendar extends Component {
     return <div className="weeks-wrap">{weeks}</div>
   }
 
+  renderPopup = () => {
+
+    const popup = []
+    const state = {...this.state}
+    const { timetable, selectedDate } = state
+    const day = dateFns.format(selectedDate, 'dddd')
+    Object
+    .keys(timetable[day])
+    .forEach(classNo => {
+        popup.push(
+          <div className="attendance-row-wrap" key={classNo}>
+            <span className="attendance-subject">{timetable[day][classNo].subject}</span>
+          </div>
+        )
+      })
+
+    return <div className="attendance-popup-wrap">{popup}</div>
+  }
+
   renderCells = () => {
     const cells = []
     const monthStart = dateFns.startOfMonth(this.state.currentMonth)
@@ -96,10 +133,17 @@ export default class Calendar extends Component {
         <div
           className={`${dateFns.format(date, "dddd")} ${row} ${dateFns.isSameDay(date, selectedDate) ? ' active' : ''} cell`}
           key={date}
-          onClick={() => this.setDate(cloneDate)}
+          onClick={() => this.handleClick(cloneDate)}
         >
+          <span>{ dateFns.format(date, "D") }</span>
           {
-            dateFns.format(date, "D")
+            dateFns.isSameDay(date, selectedDate) && Object.keys(this.state.dayTimetable).length !== 0
+            ?
+            <div className="attendance-popup">
+              <div className="popup-heading">Attendance</div>
+              {this.renderPopup()}
+            </div>
+            : null
           }
         </div>
       )
@@ -115,11 +159,15 @@ export default class Calendar extends Component {
     return <div className="cells-wrap">{cells}</div>
   }
 
-  setDate = (date) => {
+  handleClick = (date) => {
     this.setState({
       selectedDate: date
     })
-    console.log(date)
+
+    const day = dateFns.format(date, "dddd")
+    this.setState({
+      dayTimetable: this.state.timetable[day] || {}
+    })
   }
 
   render() {

@@ -126,7 +126,7 @@
 .popup-buttons > .register {
   font-size: 30px;
 }
-.active {
+.popup-buttons .active {
   background-color: rgb(36, 36, 36);
   color: #fbfffe;
 

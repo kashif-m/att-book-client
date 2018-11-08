@@ -8,7 +8,6 @@ export default class Sidebar extends Component {
     const todayClass = state === 'today' ? 'today active' : 'today'
     const statsClass = state === 'stats' ? 'stats active' : 'stats'
     const profileClass = state === 'profile' ? 'profile active' : 'profile'
-    const timetablesClass = state === 'timetables' ? 'timetables active' : 'timetables'
     
     return (
       <div className="side-wrap">
@@ -22,9 +21,6 @@ export default class Sidebar extends Component {
           <div onClick={() => this.props.changeContentState('profile')}
             className={profileClass}
           >PROFILE</div>
-          <div onClick={() => this.props.changeContentState('timetables')}
-            className={timetablesClass}
-          >TIMETABLES</div>
         </div>
       </div>
     )

@@ -1,10 +1,37 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 
 // UDTs
 import Calendar from './Calendar'
-import Timetable from './Timetable';
+import Profile from './Profile';
+import Attendance from './Attendance'
 
 export default class Content extends Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      timetable: {}
+    }
+  }
+
+  componentDidMount() {
+    this.fetchTimetable()
+  }
+
+  fetchTimetable = () => {
+    axios
+      .get('/timetable/fetch', {
+        headers: {
+          'Authorization': this.props.token
+        }
+      })
+      .then(res => this.setState({ timetable: res.data }))
+      .catch(err => console.log(err.response.data))
+  }
+
+
   render() {
 
     const state = this.props.contentState
@@ -13,15 +40,19 @@ export default class Content extends Component {
         {
           state === 'today'
           ?
-          <Calendar />
-          :
-          state === 'timetables'
-          ?
-          <Timetable
+          <Attendance
             token={this.props.token}
+            timetable={this.state.timetable}
           />
           :
-          null
+          state === 'profile'
+          ?
+          <Profile
+            token={this.props.token}
+            timetable={this.state.timetable}
+            fetchTimetable={this.fetchTimetable}
+          />
+          : null
         }
       </div>
     )
