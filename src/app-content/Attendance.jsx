@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import dateFns from 'date-fns'
 import axios from 'axios'
 
+// functions
+import functions from './Attendance/AttendanceHelpers'
+
 // css
 import '../styles/Attendance.css'
 
@@ -14,9 +17,10 @@ export default class Attendance extends Component {
       currentMonth: new Date(),
       selectedDate: new Date(),
       dayTimetable: {},
-      format: 'daily',
+      format: 'weekly',
       attendance: {},
-      newSubject: ''
+      newSubject: '',
+      weeklyPopup: {}
     }
   }
 
@@ -29,7 +33,7 @@ export default class Attendance extends Component {
 
     if(this.state.selectedDate !== prevState.selectedDate) {
       this.updateDayTimetable()
-      this.fetchAttendance()
+      this.fetchAttendance()  
     }
     if(JSON.stringify(prevProps.timetable) !== JSON.stringify(this.props.timetable))
       this.updateDayTimetable()
@@ -46,9 +50,6 @@ export default class Attendance extends Component {
   }
 
   fetchAttendance = () => {
-    this.setState({
-      attendance: {}
-    })
     axios
       .get(`/attendance/${dateFns.format(this.state.selectedDate, 'YYYY-MM-DD')}/get`, {
         headers: {
@@ -57,6 +58,18 @@ export default class Attendance extends Component {
       })
       .then(res => res.data && this.setState({attendance: res.data}))
       .catch(err => console.log(err.response.data))
+  }
+
+  fetchAttendanceByDate = (date) => {
+    axios
+      .get(`/attendance/${dateFns.format(date, 'YYYY-MM-DD')}/get`, {
+        headers: {
+          'Authorization': this.props.token
+        }
+      })
+      .then(res => res.data && this.setState({attendance: res.data}))
+      .catch(err => console.log(err.response.data))
+
   }
 
   advanceDay = () => {
@@ -75,31 +88,25 @@ export default class Attendance extends Component {
     })
   }
 
-  renderDays = () => {
-    
-    // const daysList = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', ]
-
-  }
-
   renderHeader = () => {
     
     const header = []
     const selectedDate = this.state.selectedDate
     header.push(
-      <div className="attendance-header-wrap" key="header">
-        <div className="header-week-day">
-          <img src={require('../images/arrow-left.svg')} alt="<-" className="prev"
+      <div className="att--header" key="header">
+        <div className="att--header--day">
+          <img src={require('../images/arrow-left.svg')} alt="<-" className="att--header--day-prev"
               onClick={this.prevDay}
             />
-          <span className="current-day">
+          <span className="att--header--day-current">
             {dateFns.format(selectedDate, 'dddd').toUpperCase()}
           </span>
-          <img src={require('../images/arrow-right.svg')} alt="->" className="next"
+          <img src={require('../images/arrow-right.svg')} alt="->" className="att--header--day-next"
               onClick={this.advanceDay}
             />
         </div>
-        <span className="header-month">{dateFns.format(selectedDate, 'MMMM D, YYYY').toUpperCase()}</span>
-        <span className="header-info">
+        <span className="att--header--month">{dateFns.format(selectedDate, 'MMMM D, YYYY').toUpperCase()}</span>
+        <span className="att--header--info">
           Classes
           {
             dateFns.isSameDay(this.state.selectedDate, new Date()) ?
@@ -182,16 +189,31 @@ export default class Attendance extends Component {
     })
   }
 
-  getAbbreviation = subject => {
+  renderAttendanceOptions = (i) =>
+      <div className="att--options">
+        <img src={require('../images/attended.svg')} alt="attended"
+            className="att--options-attended" onClick={() => this.updateAttendance(i, 'present')}/>
+        <img src={require('../images/pending.svg')} alt="pending"
+            className="att--options-pending" onClick={() => this.updateAttendance(i, 'pending')}/>
+        <img src={require('../images/not-attended.svg')} alt="absent"
+            className="att--options-absent" onClick={() => this.updateAttendance(i, 'absent')}/>
+      </div>
 
-    if(!subject)
-      return
-    const arr = subject.split(' ')
-    if(arr.length > 1)
-      return (arr[0].charAt(0) + arr[1].charAt(0)).toUpperCase()
+  renderAttendanceStatus = (data, day, i) => 
+      <div className="att--status">
+        <span className={`att--status-${data.status}`}> {data.status.toUpperCase()} </span>
+        <img src={require('../images/edit-attendance.svg')} alt="edit" className="att--status-edit"
+            onClick={() => this.editAttendance(day, i)}/>
+      </div>
 
-    return subject.substr(0, 2).toUpperCase()
-  }
+  renderEditSubject = (data, i) =>
+      <input id={`edit-subject-${i}`} type="text" className="att--subject-edit"
+        defaultValue={data.subject}
+        onChange={text => this.setState({newSubject: text.target.value})}
+        onBlur={() => this.updateSubject(i)}
+        onKeyDown={key => key.keyCode === 13 && this.updateSubject(i)}
+        onFocus={() => this.setState({ newSubject: data.subject })} />
+
 
   renderSubjects = () => {
 
@@ -202,51 +224,28 @@ export default class Attendance extends Component {
     const att = attendance[day] || {}
 
     const totalSubjects = (dayTimetable !== {} && Object.keys(dayTimetable).reverse()[0]) || 0
-    const totalLoggedSubjects = att && Object.keys(att).reverse()[0] || 0
+    const totalLoggedSubjects = (att && Object.keys(att).reverse()[0]) || 0
     const max = totalSubjects > totalLoggedSubjects ? totalSubjects : totalLoggedSubjects
 
     if(max === 0)
       subjects.push(
-        <div className="no-classes" key="no-class">No classes found.</div>
+        <div className="att--classes-none" key="no-class">No classes found.</div>
       )
 
     for(let i = 1; i <= max; i++) {
       const data = att[i] || dayTimetable[i]
       subjects.push(
         data ?
-        <div className="subject-row-wrap" key={i}>
-          <div className="attendance-subject-abbreviation">{this.getAbbreviation(data.subject)}</div>
+        <div className="att--daily--subject_row" key={i}>
+          {functions.renderSubjectName(data)}
           {
-            data.status ?
-            <div className="attendance-status-wrap">
-              <span className={`attendance-status ${data.status}`} >
-                {data.status.toUpperCase()}
-              </span>
-              <img src={require('../images/edit-attendance.svg')} alt="edit" className="attendance-edit"
-                  onClick={() => this.editAttendance(day, i)}
-                />
-            </div>
-            :
-            <div className="attendance-buttons">
-              <img src={require('../images/attended.svg')} alt="attended"
-                  className="button-attended" onClick={() => this.updateAttendance(i, 'present')}
-                />
-              <img src={require('../images/pending.svg')} alt="pending"
-                  className="button-pending" onClick={() => this.updateAttendance(i, 'pending')}
-                />
-              <img src={require('../images/not-attended.svg')} alt="absent"
-                  className="button-absent" onClick={() => this.updateAttendance(i, 'absent')}
-                />
-            </div>
+            data.status
+            ? this.renderAttendanceStatus(data, day, i)
+            : this.renderAttendanceOptions(i)
           }
           {
-            data.status === undefined ?
-            <input id={`edit-subject-${i}`} type="text" className="edit-subject"
-              defaultValue={data.subject}
-              onChange={text => this.setState({newSubject: text.target.value})}
-              onBlur={() => this.updateSubject(i)}
-              onKeyDown={key => key.keyCode === 13 && this.updateSubject(i)}
-              onFocus={() => this.setState({ newSubject: data.subject })} />
+            data.status === undefined
+            ? this.renderEditSubject(data, i)
             : null
           }
         </div>
@@ -254,11 +253,11 @@ export default class Attendance extends Component {
       )
     }
 
-    return <div className="attendance-subject-wrap" key="subject" >{subjects}</div>
+    return <div className="att--daily--subject" key="subject" >{subjects}</div>
   }
 
   renderDaily = () => {
-    
+
     const daily = []
     daily.push(
       this.renderHeader()
@@ -266,11 +265,110 @@ export default class Attendance extends Component {
     daily.push(
       this.renderSubjects()
     )
-    return <div className="daily-wrap">{daily}</div>
+    return <div className="att--daily">{daily}</div>
+  }
+
+  renderDays = () => {
+
+    let date = this.state.selectedDate
+    const startOfWeek = dateFns.startOfISOWeek(date)
+    date = startOfWeek
+    const endOfWeek = dateFns.endOfISOWeek(date)
+    const days = []
+
+    while(!dateFns.isSameDay(date, endOfWeek)) {
+      days.push(
+        <div className="att--weekly--days--day" key={date}>{dateFns.format(date, 'ddd').toUpperCase()}</div>
+      )
+
+      date = dateFns.addDays(date, 1)
+    }
+
+    return <div className="att--weekly--days" key="days">{days}</div>
+  }
+
+  renderWeeklyHeader = () => {
+    
+    const header = []
+    const date = this.state.selectedDate
+
+    header.push(
+      <div className="att--weekly--header--week" key="week-number">WEEK&nbsp;#{dateFns.getISOWeek(date)}</div>
+    )
+
+    return <div className="att--weekly--header" key="header">{header}</div>
+  }
+
+  renderWeeklySubjects = () => {
+
+    let date = this.state.selectedDate
+    const startOfWeek = dateFns.startOfISOWeek(date)
+    date = startOfWeek
+    const endOfWeek = dateFns.endOfISOWeek(date)
+    const subjectsWrap = []
+
+    while(!dateFns.isSameDay(date, endOfWeek)) {
+
+        const subjects = []
+        const state = {...this.state}
+        const { dayTimetable, selectedDate, attendance } = state
+        const day = dateFns.format(selectedDate, 'dddd')
+        const att = attendance[day] || {}
+    
+        const totalSubjects = (dayTimetable !== {} && Object.keys(dayTimetable).reverse()[0]) || 0
+        const totalLoggedSubjects = (att && Object.keys(att).reverse()[0]) || 0
+        const max = totalSubjects > totalLoggedSubjects ? totalSubjects : totalLoggedSubjects
+
+        for(let i = 1; i <= max; i++) {
+          const data = att[i] || dayTimetable[i]
+          subjects.push(
+            data ?
+            <div className="att--weekly--subjects_row_wrap" key={i}>
+              <div className="att--weekly--subjects_row_wrap--subject"
+                onClick={() => this.setState({weeklyPopup: {
+                  subject: data.subject,
+                  classNo: i
+                }})} >
+                {functions.renderSubjectName(data)}
+              </div>
+              {
+                Object.keys(this.state.weeklyPopup).length > 0 &&
+                this.state.weeklyPopup.subject === data.subject &&
+                this.state.weeklyPopup.classNo === data.classNo
+                ?
+                this.renderAttendanceOptions(i)
+                : null
+              }
+            </div>
+            : null
+          )
+        }
+    
+        subjectsWrap.push(
+          <div className="att--weekly--subjects_row">{subjects}</div>
+        )
+      
+      date = dateFns.addDays(date, 1)
+      // this.fetchAttendanceByDate(date)
+    }
+
+    return <div className="att--weekly--subjects">{subjectsWrap}</div>
   }
 
   renderWeekly = () => {
-    this.renderWeeklyHeader()
+
+    const weekly = []
+    weekly.push(
+      this.renderWeeklyHeader()
+    )
+    weekly.push(
+      this.renderDays()
+    )
+    weekly.push(
+      this.renderWeeklySubjects()
+    )
+
+    return <div className="att--weekly">{weekly}</div>
   }
   
   render() {
@@ -278,24 +376,20 @@ export default class Attendance extends Component {
     const state = {...this.state}
     const { format } = state
     return (
-      <div className="attendance-wrap">
+      <div className="att">
         {
           format === 'daily'
           ? this.renderDaily()
           : format === 'weekly'
           ? this.renderWeekly()
-          : format === 'monthly'
-          ? this.renderMonthly()
           : null
         }
 
-        <div className="viewer-wrap">
-          <button className={`daily-switch ${this.state.format === 'daily' ? 'active': null}`}
+        <div className="viewer">
+          <button className={`viewer--switch-daily ${this.state.format === 'daily' ? 'active': null}`}
             onClick={() => this.setState({format: 'daily'})} >DAILY</button>
-          <button className={`weekly-switch ${this.state.format === 'weekly' ? 'active': null}`}
+          <button className={`viewer--switch-weekly ${this.state.format === 'weekly' ? 'active': null}`}
             onClick={() => this.setState({format: 'weekly'})} >WEEKLY</button>
-          <button className={`monthly-switch ${this.state.format === 'monthly' ? 'active': null}`}
-            onClick={() => this.setState({format: 'monthly'})} >MONTHLY</button>
         </div>
       </div>
     )
