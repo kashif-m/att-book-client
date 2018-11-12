@@ -31,7 +31,6 @@ export default class Content extends Component {
       .catch(err => console.log(err.response.data))
   }
 
-
   render() {
 
     const state = this.props.contentState

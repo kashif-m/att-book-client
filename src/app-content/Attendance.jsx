@@ -17,7 +17,7 @@ export default class Attendance extends Component {
       currentMonth: new Date(),
       selectedDate: new Date(),
       dayTimetable: {},
-      format: 'weekly',
+      format: 'daily',
       attendance: {},
       newSubject: '',
       weeklyPopup: {}
@@ -25,27 +25,30 @@ export default class Attendance extends Component {
   }
 
   componentDidMount() {
-    this.updateDayTimetable()
     this.fetchAttendance()
+    this.updateDayTimetable(this.state.selectedDate, this.props.timetable)
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  shouldComponentUpdate(nextProps, nextState) {
 
-    if(this.state.selectedDate !== prevState.selectedDate) {
-      this.updateDayTimetable()
-      this.fetchAttendance()  
+    if(JSON.stringify(this.props.timetable) !== JSON.stringify(nextProps.timetable)) {
+      this.updateDayTimetable(nextState.selectedDate, nextProps.timetable)
+      return false
     }
-    if(JSON.stringify(prevProps.timetable) !== JSON.stringify(this.props.timetable))
-      this.updateDayTimetable()
+
+    if(this.state.selectedDate !== nextState.selectedDate) {
+      this.fetchAttendanceByDate(nextState.selectedDate)
+      this.updateDayTimetable(nextState.selectedDate, nextProps.timetable)
+      return false
+    }
+
+    return true
   }
 
-  updateDayTimetable = () => {
-    
-    const { timetable } = this.props
-    const { selectedDate } = this.state
+  updateDayTimetable = (date, timetable) => {
 
     this.setState({
-      dayTimetable: timetable[dateFns.format(selectedDate, 'dddd')] || {}
+      dayTimetable: timetable[dateFns.format(date, 'dddd')] || {}
     })
   }
 
@@ -69,7 +72,6 @@ export default class Attendance extends Component {
       })
       .then(res => res.data && this.setState({attendance: res.data}))
       .catch(err => console.log(err.response.data))
-
   }
 
   advanceDay = () => {
@@ -96,14 +98,12 @@ export default class Attendance extends Component {
       <div className="att--header" key="header">
         <div className="att--header--day">
           <img src={require('../images/arrow-left.svg')} alt="<-" className="att--header--day-prev"
-              onClick={this.prevDay}
-            />
+              onClick={this.prevDay} />
           <span className="att--header--day-current">
             {dateFns.format(selectedDate, 'dddd').toUpperCase()}
           </span>
           <img src={require('../images/arrow-right.svg')} alt="->" className="att--header--day-next"
-              onClick={this.advanceDay}
-            />
+              onClick={this.advanceDay} />
         </div>
         <span className="att--header--month">{dateFns.format(selectedDate, 'MMMM D, YYYY').toUpperCase()}</span>
         <span className="att--header--info">
@@ -122,7 +122,7 @@ export default class Attendance extends Component {
 
   editAttendance = (day, classNo) => {
     
-    const attendance = {...this.state.attendance}
+    const attendance = this.state.attendance
     delete attendance[day][classNo].status
 
     this.setState({
@@ -166,27 +166,31 @@ export default class Attendance extends Component {
 
   updateSubject = (classNo) => {
 
-    const input = document.getElementById(`edit-subject-${classNo}`)
-    input.blur()
-
-    const { attendance, newSubject, selectedDate, dayTimetable } = this.state
+    let dayTimetable = {...this.state.dayTimetable}
+    let { attendance, newSubject, selectedDate } = this.state
     const day = dateFns.format(selectedDate, 'dddd')
     const att = attendance[day]
 
     if(newSubject.length !== 0) {
-      if(att && att[classNo] && !att[classNo].status)
+      if(att && att[classNo] && !att[classNo].status) {
         attendance[day][classNo].subject = newSubject
-      else
-        dayTimetable[classNo].subject = newSubject
+        this.setState({
+          attendance
+        })
+      }
+      else {
+        dayTimetable = {...this.state.dayTimetable, [classNo]: {subject: newSubject}}
+        this.setState({
+          dayTimetable
+        })
+      }
+
+      this.setState({
+        newSubject: ''
+      })
     }
     else
-      input.value = dayTimetable[classNo].subject
-
-    this.setState({
-      attendance,
-      dayTimetable,
-      newSubject: ''
-    })
+      document.getElementById(`edit-subject-${classNo}`).value = dayTimetable[classNo].subject
   }
 
   renderAttendanceOptions = (i) =>
@@ -206,14 +210,12 @@ export default class Attendance extends Component {
             onClick={() => this.editAttendance(day, i)}/>
       </div>
 
-  renderEditSubject = (data, i) =>
-      <input id={`edit-subject-${i}`} type="text" className="att--subject-edit"
-        defaultValue={data.subject}
+  renderEditSubject = (subject, classNo) =>
+      <input type="text" className="att--subject-edit" key={`${classNo}${subject}`}
+        id={`edit-subject-${classNo}`} defaultValue={subject}
         onChange={text => this.setState({newSubject: text.target.value})}
-        onBlur={() => this.updateSubject(i)}
-        onKeyDown={key => key.keyCode === 13 && this.updateSubject(i)}
-        onFocus={() => this.setState({ newSubject: data.subject })} />
-
+        onBlur={() => this.updateSubject(classNo)}
+        onKeyDown={key => key.keyCode === 13 && key.target.blur()} />
 
   renderSubjects = () => {
 
@@ -245,7 +247,7 @@ export default class Attendance extends Component {
           }
           {
             data.status === undefined
-            ? this.renderEditSubject(data, i)
+            ? this.renderEditSubject(data.subject, i)
             : null
           }
         </div>
