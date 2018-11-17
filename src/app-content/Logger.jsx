@@ -6,9 +6,6 @@ import axios from 'axios'
 import Daily from './Logger/Daily'
 import Weekly from './Logger/Weekly'
 
-// functions
-import functions from './Logger/AttendanceHelpers'
-
 // css
 import '../styles/Logger.css'
 
@@ -18,7 +15,7 @@ export default class Logger extends Component {
     super(props)
 
     this.state = {
-      format: 'weekly',
+      format: 'daily',
       attendance: {},
     }
   }

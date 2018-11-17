@@ -288,6 +288,7 @@
 
   margin-right: 40px;
 
+  justify-self: center;
   display: grid;
   grid-template-columns: min-content;
   grid-auto-rows: min-content;
@@ -299,7 +300,7 @@
 
   background-color: #251605;
   color: #fbfffe;
-  padding: 10px 20px 10px 20px;
+  padding: 5px 20px 5px 20px;
   border-radius: 4px;
   
   display: flex;
