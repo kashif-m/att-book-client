@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import axios from 'axios'
 
 // UDTs
+import Stats from './Stats'
 import Calendar from './Calendar'
 import Profile from './Profile';
-import Attendance from './Attendance'
+import Logger from './Logger'
 
 export default class Content extends Component {
 
@@ -37,19 +38,20 @@ export default class Content extends Component {
     return (
       <div className="content-wrap">
         {
-          state === 'today'
-          ?
-          <Attendance
+          state === 'today' ?
+          <Logger
             token={this.props.token}
             timetable={this.state.timetable}
           />
-          :
-          state === 'profile'
-          ?
+          : state === 'profile' ?
           <Profile
             token={this.props.token}
             timetable={this.state.timetable}
             fetchTimetable={this.fetchTimetable}
+          />
+          : state === 'stats' ?
+          <Stats
+            token={this.props.token}
           />
           : null
         }

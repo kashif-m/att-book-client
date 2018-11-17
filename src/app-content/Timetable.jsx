@@ -14,7 +14,8 @@ export default class Timetable extends Component {
       newSubject: '',
       popupAddSubject: {},
       showTTPopup: false,
-      timetable: {}
+      timetable: {},
+      editedTimetable: {}
     }
   }
 
@@ -30,7 +31,13 @@ export default class Timetable extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return !this.state.popupAddSubject.status || this.state.popupAddSubject.status !== nextState.popupAddSubject.status
+
+    if(Object.keys(this.state.popupAddSubject).length !== 0 &&
+        (this.state.popupAddSubject.status === nextState.popupAddSubject.status)) {
+      return false
+    }
+
+    return true
   }
 
   clearStates = () =>
@@ -43,17 +50,16 @@ export default class Timetable extends Component {
 
   saveTimetable = () => this.setState({ timetable: this.props.timetable })
 
-  handleSubjectInput = (event, i) => {
+  handleSubjectInput = (classNo, subject) => {
 
     const timetable = {...this.state.timetable}
     timetable[this.state.popupAddSubject.day] = timetable[this.state.popupAddSubject.day] || {}
-
     const classes = {...timetable[this.state.popupAddSubject.day.classes]} || {}
-    const subject = event.target.value
-    if(subject.length !== 0)
-      classes[i] = { subject }
 
-    timetable[this.state.popupAddSubject.day][i] = classes[i]
+    if(subject.length !== 0)
+      classes[classNo] = subject
+
+    timetable[this.state.popupAddSubject.day][classNo] = classes[classNo]
     this.setState({
       timetable
     })
@@ -85,31 +91,41 @@ export default class Timetable extends Component {
   saveEdits = () => {
 
     const state = {...this.state}
-    const { timetable, editSubject, newSubject, showTTPopup } = state
+    const { timetable, editSubject, newSubject, editedTimetable, showTTPopup } = state
+    const day = editSubject.day
+    const classNo = editSubject.classNo
 
-    if(newSubject.length !== 0)
-      timetable[editSubject.day][editSubject.classNo].subject = newSubject
-    else if(newSubject.length === 0 && showTTPopup.type === 'edit')
-      timetable[editSubject.day][editSubject.classNo].delete = true
-    else if(newSubject.length === 0 && showTTPopup.type === 'add')
-      delete timetable[editSubject.day][editSubject.classNo]
+    if(newSubject.length !== 0) {
+      if(showTTPopup.type === 'edit') {
+        editedTimetable[day] = editedTimetable[day] || {}
+        editedTimetable[day][classNo] = newSubject
+      }
+      else
+        timetable[editSubject.day][editSubject.classNo] = newSubject
+    }
+    else {
+      if(showTTPopup.type === 'edit' && editedTimetable[day] && editedTimetable[day][classNo])
+        delete editedTimetable[day][classNo]
+      else
+        delete timetable[editSubject.day][editSubject.classNo]
+    }
 
     this.setState({
-      timetable,
-      editSubject: {}
+      editedTimetable,
+      editSubject: {},
+      timetable
     })
   }
 
   renderSubjectInputs = (subjects) => {
 
-    const state = {...this.state}
-    const { popupAddSubject, timetable } = state
+    const { popupAddSubject, timetable } = this.state
     let i = 0, length = 0
     const input = []
 
-    if(timetable[popupAddSubject.day] && Object.keys(timetable[popupAddSubject.day]).length !== 0) {
+    if(timetable[popupAddSubject.day]) {
       length = Object.keys(timetable[popupAddSubject.day]).length
-      i = parseInt(Object.keys(timetable[popupAddSubject.day])[length - 1], 10)
+      i = parseInt(Object.keys(timetable[popupAddSubject.day]).reverse()[0], 10)
       subjects = parseInt(subjects, 10) + i
     }
 
@@ -121,7 +137,7 @@ export default class Timetable extends Component {
           type="text"
           placeholder={`Subject ${++length}`}
           autoFocus={(i === 0)}
-          onChange={(event) => this.handleSubjectInput(event, cloneI+1)}
+          onChange={key => this.handleSubjectInput(cloneI+1, key.target.value)}
           onKeyDown={key => {
             if(key.keyCode === 13 && cloneI === subjects - 1)
               this.handleContinue()
@@ -135,7 +151,7 @@ export default class Timetable extends Component {
 
   renderInputRows = () => {
 
-    const { timetable, editSubject } = this.state
+    const { timetable, editSubject, editedTimetable } = this.state
     const cells = []
     const daysList = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
@@ -143,51 +159,49 @@ export default class Timetable extends Component {
 
       let day = daysList[i]
       cells.push(
-        <div className={`row-wrap ${daysList[i]}`} key={i} >
-          <div className={`${daysList[i]} popup-day`} key={i} >
-            {daysList[i]}
+        <div className={`ttpopup--content--row ${day}`} key={i} >
+          <div className={`row--day ${day}`} key={i} >
+            {day}
           </div>
 
-          <div className="subject-wrap">
+          <div className="row--subject">
             {
               timetable[day] &&
               Object
                 .keys(timetable[day])
-                .map(key => {
-                  return !timetable[day][key].delete &&
+                .map(classNo => {
+                  const subject = (editedTimetable[day] && editedTimetable[day][classNo]) || timetable[day][classNo]
+                  return timetable[day][classNo] &&
                     (<div
-                        className="subject-name"
-                        key={key}
+                        className="row--subject--name" key={classNo}
                         onClick={() => this.setState(prevState => {
                           return {
                             editSubject: {
                               day: day,
-                              subject: prevState.timetable[day][key].subject,
-                              classNo: key
+                              subject: prevState.timetable[day][classNo],
+                              classNo
                             },
-                            newSubject: prevState.timetable[day][key].subject
+                            newSubject: prevState.timetable[day][classNo]
                         }})}>
-                        <div className="subject-abbreviation">
-                          { this.getAbbreviation(this.state.timetable[day][key].subject) }
+                        <div className="row--subject--abbreviation">
+                          { this.getAbbreviation(subject) }
                         </div>
                         {
-                          Object.keys(editSubject).length !== 0 && editSubject.classNo === key && editSubject.day === day
+                          Object.keys(editSubject).length !== 0 && editSubject.classNo === classNo && editSubject.day === day
                           ?
-                          <div className="edit-subject-popup">
-                            <input type="text"
-                              id="editsub" key={key} className={key}
-                              defaultValue={editSubject.subject} autoFocus={true}
-                              onChange={text => this.setState({newSubject: text.target.value})}
-                              onKeyDown={key => key.keyCode === 13 ? this.saveEdits() : null}
-                              onBlur={() => this.saveEdits()} />
-                          </div>
+                          <input type="text"
+                            id="editsub" key={classNo} className={classNo}
+                            defaultValue={editSubject.subject} autoFocus={true}
+                            onChange={text => this.setState({newSubject: text.target.value})}
+                            onKeyDown={key => key.keyCode === 13 && key.target.blur()}
+                            onBlur={() => this.saveEdits()} />
                           : null
                         }
                     </div>)
                   }
                 )
             }
-            <button className="add-button"
+            <button className="row--subject-add"
               onClick={() => this.setState({popupAddSubject: {
                 day,
                 new: true,
@@ -198,62 +212,63 @@ export default class Timetable extends Component {
           {
             Object.keys(this.state.popupAddSubject).length !== 0 && this.state.popupAddSubject.day === day
             ?
-            <div className="add-subject-popup">
+            <div className="row--subject--popup">
               <img src={require('../images/close.svg')} alt="x"
                 onClick={() => this.setState({popupAddSubject: {}})}
-                className="close-button" />
-              <span className="add-subject-day">
+                className="popup-close" />
+              <span className="popup--subject">
                 Classes on <br/> {day}
               </span>
               {
                 this.state.popupAddSubject.status === 1
                 ?
-                <div className="add-subject-classes-wrap">
-                  <div className="classes-wrap">
-                    <button className="add-subject-sub-classes"
+                <div className="row--popup--1">
+                  <div className="popup--1--buttons">
+                    <button className="button-add"
                         onClick={() => { this.day.value = parseInt(this.day.value, 10) - 1 }} > - </button>
                     <input type="number" defaultValue={1} ref={node => this.day = node}
+                        autoFocus={true}
                         onKeyDown={key => {
                           if(key.keyCode === 13)
                             this.handleContinue()
                         }} />
-                    <button className="add-subject-add-classes"
+                    <button className="button-sub"
                         onClick={() => { this.day.value = parseInt(this.day.value, 10) + 1 }} > + </button>
                   </div>
-                  <label className="classes-label">Total number of classes</label>
+                  <label className="popup--1--label">Total number of classes</label>
                 </div>
                 : this.state.popupAddSubject.status === 2
                 ? this.renderSubjectInputs(this.day.value)
                 : null
               }
               <img src={require('../images/continue.svg')} alt="continue"
-                  className="continue" onClick={this.handleContinue} />
+                  className="button-continue" onClick={this.handleContinue} />
             </div>
             : null
           }
         </div>
       )
     }
-    return <div className="input-row-wrap">{cells}</div>
+    return cells
   }
 
   submit = () => {
-    const timetable = this.state.timetable
-    const data = {timetable}
+    
     if(this.state.showTTPopup.type === 'add')
-      this.addTimetable(data)
+      this.addTimetable(this.state.timetable)
     else if(this.state.showTTPopup.type === 'edit')
-      this.updateTimetable(data)
+      this.updateTimetable(this.state.editedTimetable)
   }
 
-  addTimetable = (data) => {
+  addTimetable = (timetable) => {
     axios
-    .post('/timetable/add', data, {
+    .post('/timetable/add', {timetable}, {
         headers: {
           'Authorization': this.props.token
         }
     })
     .then(res => {
+      console.log(res)
       if(res.status === 200) {
         this.clearStates()
         this.props.fetchTimetable()
@@ -262,9 +277,9 @@ export default class Timetable extends Component {
     .catch(err => console.log(err.response.data))
   }
 
-  updateTimetable = (data) => {
+  updateTimetable = (timetable) => {
     axios
-      .post('/timetable/update', data, {
+      .post('/timetable/update', {timetable}, {
         headers: {
           'Authorization': this.props.token
         }
@@ -272,7 +287,9 @@ export default class Timetable extends Component {
       .then(res => {
         if(res.status === 200) {
           this.clearStates()
-          this.props.fetchTimetable()
+          this.setState({
+            timetable: this.props.timetable
+          })
         }
       })
       .catch(err => console.log(err.response.data))
@@ -296,28 +313,31 @@ export default class Timetable extends Component {
   renderSavedTimetable = () => {
 
     const savedTimetable = []
-    Object.keys(this.state.timetable).length === 0 &&
+    const timetable = {...this.state.timetable}
+    Object.keys(timetable).length === 0 ?
     savedTimetable.push(
       <div className="empty" key="none" >No timetables found.</div>
+    ) &&
+    savedTimetable.push(
+      <button className="tt--content--savedtt-add" key="add"
+        onClick={() => this.setState({showTTPopup: {type: 'add'}})}>+ NEW TIMETABLE</button>
     )
+    : null
 
-    Object.keys(this.state.timetable).length !== 0 &&
+    Object.keys(timetable).length !== 0 &&
       savedTimetable.push(
-        <div className="saved-timetable" key="some" >
-          <span className="tag">Timetable</span>
-          <div className="timetable-options">
-            <img src={require('../images/edit.svg')} alt="edit" className="edit" onClick={() => this.setState({showTTPopup: {type: 'edit'}})} />
-            <img src={require('../images/remove.svg')} alt="x" className="remove" onClick={() => this.removeTimetable()} />
+        <div className="savedtt" key="some" >
+          <span className="savedtt--tag">Timetable</span>
+          <div className="savedtt--options">
+            <img src={require('../images/edit.svg')} alt="edit" className="savedtt--options-edit"
+              onClick={() => this.setState({showTTPopup: {type: 'edit'}})} />
+            <img src={require('../images/remove.svg')} alt="x" className="savedtt--options-remove"
+              onClick={() => this.removeTimetable()} />
           </div>
         </div>
       )
 
-    savedTimetable.push(
-      Object.keys(this.state.timetable).length === 0
-      ? <button key="new-timetable" className='add-timetable' onClick={() => this.setState({showTTPopup: {type: 'add'}})}>+ NEW TIMETABLE</button>
-      : null
-    )
-    return <div className="saved-timetable-wrap">{savedTimetable}</div>
+    return <div className="tt--content--savedtt">{savedTimetable}</div>
   }
 
   render() {
@@ -326,19 +346,19 @@ export default class Timetable extends Component {
       zIndex: this.state.showTTPopup ? -1 : 'auto'
     }
     return (
-      <div className="timetable-wrap">
-        <div className="timetable-content" style={ttStyle}>
-          <div className="timetable-heading">TIMETABLES</div>
+      <div className="timetable">
+        <div className="tt--content" style={ttStyle}>
+          <div className="tt--content--heading">TIMETABLES</div>
           {this.renderSavedTimetable()}
         </div>
         {/* popup */}
         {
           Object.keys(this.state.showTTPopup).length !== 0
           ?
-          <div className="tt-popup-wrap">
-            <img src={require('../images/close.svg')} className="close-button"
+          <div className="tt--popup">
+            <img src={require('../images/close.svg')} className="popup-close"
               alt="x" onClick={() => this.clearStates()}/>
-            <div className="tt-popup-content">
+            <div className="tt--popup--content">
               {this.renderInputRows()}
             </div>
             <button className="save-button" onClick={this.submit}>SAVE</button>

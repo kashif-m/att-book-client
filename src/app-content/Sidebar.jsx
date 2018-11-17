@@ -6,7 +6,7 @@ export default class Sidebar extends Component {
 
     const state = this.props.contentState
     const todayClass = state === 'today' ? 'today active' : 'today'
-    const statsClass = state === 'stats' ? 'stats active' : 'stats'
+    const statsClass = state === 'stats' ? 'statsistics active' : 'statistics'
     const profileClass = state === 'profile' ? 'profile active' : 'profile'
     
     return (

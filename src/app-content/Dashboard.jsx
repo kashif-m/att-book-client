@@ -14,7 +14,7 @@ export default class Dashboard extends Component {
     super(props)
 
     this.state = {
-      contentState: 'today'
+      contentState: 'stats'
     }
   }
 

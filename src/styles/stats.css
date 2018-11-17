@@ -1,0 +1,35 @@
+
+.stats {
+  display: grid;
+  grid-auto-flow: row;
+  /* grid-template-columns: min-content; */
+
+  align-self: flex-start;
+  margin-left: 100px;
+  padding: 20px;
+}
+
+.stats--header {
+  font-family: openSansBold;
+  color: #0d1321;
+  font-size: 50px;
+  border-bottom: 1px solid #e5e5e5;
+  justify-self: flex-start;
+}
+
+.stats--content {
+  padding: 20px;
+}
+
+.stats--content--options {
+  cursor: pointer;
+  border: 0;
+
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  appearance: none;
+
+  font-family: PTSansBold;
+  color: #595959;
+}

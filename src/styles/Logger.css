@@ -18,6 +18,7 @@
   grid-auto-flow: row;
 
   padding: 20px 40px;
+  margin-left: 40px;
 }
 
 
@@ -100,9 +101,9 @@
   font-size: 30px;
   font-weight: 900;
   color: #fbfffe;
-  background-color: red;
+  background-color: #394f49;
   
-  align-self: flex-start;
+  align-self: center;
   justify-self: flex-end;
   display: flex;
   align-items: center;
@@ -132,22 +133,20 @@
   transition: all .15s;
 }
 .att--options {
+  position: relative;
   grid-column: 2 / 3;
   display: flex;
+  justify-content: center;
   flex-flow: row;
-  align-self: flex-start;
-
-  margin-top: 7px;
-}
-.att--options :first-child {
-  margin-left: 70px;
+  align-self: center;
+  margin-right: 23px;
 }
 .att--options-attended, .att--options-absent, .att--options-pending {
   cursor: pointer;
   align-self: center;
 
   height: 25px;
-  margin: 0 20px 0 20px;
+  margin: 0 10px 0 10px;
 }
 
 
@@ -169,9 +168,15 @@
   cursor: pointer;
 
   height: 15px;
-  align-self: flex-start;
+  margin-left: 10px;
+  align-self: center;
   
-  margin: 4px 15px 0 15px;
+  transition: all .15s;
+}
+.att--status-edit:hover {
+  height: 20px;
+  margin-left: 6px;
+  transition: all .15s;
 }
 .att--status > span {
   padding: 2px 30px 2px 30px;
@@ -182,10 +187,10 @@
   font-size: 20px;
 }
 .att--status-present {
-  background-color: #8ea604;
+  background-color: #317b22;
 }
 .att--status-absent {
-  background-color: red;
+  background-color: #e3170a;
 }
 .att--status-pending {
   background-color: #faa916;
@@ -205,12 +210,12 @@
 
 /* viewer */
 .viewer {
-  justify-self: center;
+  justify-self: flex-end;
   
   display: flex;
   flex-flow: column;
 
-  margin: 30px 0 0 100px;
+  margin: 30px 30px 0 0;
 }
 .viewer--switch-daily, .viewer--switch-weekly {
   cursor: pointer;
@@ -237,7 +242,7 @@
 /* weekly wrap */
 .att--weekly {
   display: grid;
-  grid-template-columns: repeat(2, min-content);
+  grid-template-columns: min-content auto;
   grid-template-rows: repeat(2, min-content);
 }
 
@@ -246,14 +251,42 @@
   grid-column: 1 / 3;
   grid-row: 1 / 2;
 
-  font-size: 40px;
+  padding: 20px 40px 40px 40px;
+  margin: 0 0 30px 40px;
+  justify-self: flex-start;
+
   font-family: PTSansBold;
+
+  border-bottom: 2px solid #bac1b8;
 }
+.att--weekly--header--main {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-around;
+  align-items: center;
+  
+  font-size: 50px;
+}
+.att--weekly--header--week {
+  margin: 0 40px 0 40px;
+}
+.att--weekly--header img {
+  height: 30px;
+  cursor: pointer;
+}
+.att--weekly--header--range {
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+}
+
 
 
 .att--weekly--days {
   grid-column: 1 / 2;
   grid-row: 2 / 3;
+
+  margin-right: 40px;
 
   display: grid;
   grid-template-columns: min-content;
@@ -261,12 +294,12 @@
 }
 .att--weekly--days--day {
   font-size: 30px;
-  margin-top: 20px;
+  margin: 10px 0 10px 0;
   font-family: PTSansBold;
 
-  background-color: red;
+  background-color: #251605;
   color: #fbfffe;
-  padding: 0 20px 0 20px;
+  padding: 10px 20px 10px 20px;
   border-radius: 4px;
   
   display: flex;
@@ -279,6 +312,71 @@
 
 /* weekly subjects */
 .att--weekly--subjects {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+
   display: grid;
-  grid-auto-flow: column;
+  grid-auto-flow: row;
+}
+
+.att--weekly--subjects_row {
+  display: flex;
+  align-items: center;
+}
+.att--weekly--subjects_row > .att--classes-none {
+  margin: 0;
+  justify-self: flex-start;
+}
+.att--weekly--subjects_row_wrap {
+  position: relative;
+  margin-right: 30px;
+
+  display: grid;
+  grid-auto-columns: 50px;
+
+  align-self: center;
+}
+.att--weekly--subjects_row_wrap > .att--options {
+  position: absolute;
+  top: 40px;
+  right: -23px;
+
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 1;
+}
+.att--weekly--subjects_row_wrap > .att--subject-edit {
+  position: absolute;
+  top: 0px;
+  left: -85px;
+}
+.att--weekly--subjects_row_wrap > .att--options > * {
+  margin: 5px;
+}
+.att--weekly--subjects_row_wrap-present > .helper-subject-abbreviation {
+  background-color: #317b22;
+}
+.att--weekly--subjects_row_wrap-absent > .helper-subject-abbreviation {
+  background-color: #e3170a;
+}
+.att--weekly--subjects_row_wrap-pending > .helper-subject-abbreviation {
+  background-color: #ffa400;
+}
+.att--weekly--subjects-edit {
+  cursor: pointer;
+  height: 10px;
+
+  position: absolute;
+  top: 5px;
+  right: -15px;
+
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 1;
+
+  transition: all .15s;
+}
+.att--weekly--subjects-edit:hover {
+  height: 13px;
+  transition: all .15s;
 }

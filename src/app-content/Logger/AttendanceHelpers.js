@@ -1,8 +1,8 @@
 import React from 'react'
 
 const functions = {
-  renderSubjectName: (data) => 
-      <div className="helper-subject-abbreviation">{functions.getAbbreviation(data.subject)}</div>,
+  renderSubjectName: subject => 
+      <div className="helper-subject-abbreviation">{functions.getAbbreviation(subject)}</div>,
   getAbbreviation: (subject) => {
     if(!subject)
       return
