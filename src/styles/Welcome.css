@@ -132,7 +132,7 @@
 
   transition: all .25s ease;
 }
-.popup .login-section, .popup .register-section {
+.popup .input-section {
   grid-row: -2 / -1;
   grid-column: 1 / -1;
 
@@ -152,13 +152,13 @@
 
 
 /* login & register sections */
-.login-section, .register-section {
+.input-section {
   display: grid;
   grid-auto-rows: 60px;
   grid-gap: 30px;
   font-family: PTSansBold;
 }
-.login-section > *, .register-section > * {
+.input-section > * {
   justify-self: center;
 }
 
@@ -173,10 +173,56 @@
   font-size: 17px;
 }
 
-.submit {
-  height: 40px;
+.last-row {
+  display: grid;
+  grid-template-columns: repeat(2, 110px);
+  /* justify-self: normal; */
+}
+.last-row > :first-child {
+  grid-column: 1 / 2;
+  cursor: pointer;
+
+  align-self: center;
+}
+
+.forgot-password {
+  grid-row: 3 / 4;
+  grid-column: 1 / -1;
+
+  display: flex;
+  flex-flow: column;
+
   justify-self: center;
-  margin: 20px 0 0 240px;
+  font-family: PTSansBold;
+}
+.fg--heading {
+  font-size: 40px;
+
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e5e5e5;
+}
+.forgot-password input {
+  margin-top: 20px;
+}
+.forgot-password .submit {
+  margin: 40px 0 0 150px;
+  justify-self: flex-end !important;
+}
+.forgot-password .email-error {
+  margin: 5px 0 0 5px;
+}
+.forgot-password .info {
+  margin-top: 10px;
+  font-size: 20px !important;
+}
+
+.submit {
+  grid-column: 2 / 3 !important;
+  margin-right: 10px;
+  height: 40px;
+
+  align-self: center;
+  justify-self: flex-end;
 
   cursor: pointer;
 }
@@ -275,7 +321,7 @@
 }
 .popup-enter.popup-enter-active {
   transform: translateY(0);
-  transition: all .5s;
+  transition: all .35s ease-out;
 }
 
 .popup-leave {
@@ -283,5 +329,5 @@
 }
 .popup-leave.popup-leave-active  {
   transform: translateY(100vh);
-  transition: all .5s;
+  transition: all .35s ease-in;
 }

@@ -4,22 +4,25 @@
   grid-row: 1 / 2;
 
   padding: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   background-color: #fbfffe;
 }
 
 .logo {
+  grid-column: 1 / 2;
+  cursor: pointer;
   height: 80px;
 
-  cursor: pointer;
+  justify-self: center;
 }
 
 .power {
+  grid-column: 2 / 3;
+  cursor: pointer;
   height: 40px;
 
-  cursor: pointer;
+  justify-self: center;
 }
 
 

@@ -1,0 +1,15 @@
+
+.not-found {
+  display: flex;
+  flex-flow: column;
+}
+
+.not-found .info {
+  font-family: PTSansBold;
+  font-size: 40px;
+
+  align-self: center;
+  justify-self: center;
+
+  margin-top: 100px;
+}

@@ -52,17 +52,33 @@ export default class Timetable extends Component {
 
   handleSubjectInput = (classNo, subject) => {
 
+    const showTTPopup = this.state.showTTPopup
+
     const timetable = {...this.state.timetable}
     timetable[this.state.popupAddSubject.day] = timetable[this.state.popupAddSubject.day] || {}
     const classes = {...timetable[this.state.popupAddSubject.day.classes]} || {}
-
+    
     if(subject.length !== 0)
-      classes[classNo] = subject
-
+    classes[classNo] = subject
+    
     timetable[this.state.popupAddSubject.day][classNo] = classes[classNo]
     this.setState({
       timetable
     })
+
+    if(showTTPopup.type === 'edit') {
+      const editedTimetable = {...this.state.editedTimetable}
+      editedTimetable[this.state.popupAddSubject.day] = editedTimetable[this.state.popupAddSubject.day] || {}
+      const classes = {...editedTimetable[this.state.popupAddSubject.day.classes]} || {}
+      
+      if(subject.length !== 0)
+      classes[classNo] = subject
+      
+      editedTimetable[this.state.popupAddSubject.day][classNo] = classes[classNo]
+      this.setState({
+        editedTimetable
+      })
+    }
   }
 
   getAbbreviation = (val) => {
@@ -268,7 +284,6 @@ export default class Timetable extends Component {
         }
     })
     .then(res => {
-      console.log(res)
       if(res.status === 200) {
         this.clearStates()
         this.props.fetchTimetable()
@@ -287,9 +302,7 @@ export default class Timetable extends Component {
       .then(res => {
         if(res.status === 200) {
           this.clearStates()
-          this.setState({
-            timetable: this.props.timetable
-          })
+          this.props.fetchTimetable()
         }
       })
       .catch(err => console.log(err.response.data))
@@ -314,15 +327,11 @@ export default class Timetable extends Component {
 
     const savedTimetable = []
     const timetable = {...this.state.timetable}
-    Object.keys(timetable).length === 0 ?
-    savedTimetable.push(
-      <div className="empty" key="none" >No timetables found.</div>
-    ) &&
-    savedTimetable.push(
-      <button className="tt--content--savedtt-add" key="add"
-        onClick={() => this.setState({showTTPopup: {type: 'add'}})}>+ NEW TIMETABLE</button>
-    )
-    : null
+    
+    Object.keys(timetable).length === 0 &&
+    savedTimetable.push( <div className="empty" key="none" >No timetables found.</div> ) &&
+    savedTimetable.push( <button className="tt--content--savedtt-add" key="add"
+        onClick={() => this.setState({showTTPopup: {type: 'add'}})}>+ NEW TIMETABLE</button> )
 
     Object.keys(timetable).length !== 0 &&
       savedTimetable.push(

@@ -4,9 +4,10 @@ import { render } from 'react-dom'
 // css
 import './styles/style.css'
 
-import App from './App'
+// UDC - Router
+import AppRouter from './AppRouter'
 
 render(
-  <App />,
+  <AppRouter />,
   document.getElementById('react-app')
 )

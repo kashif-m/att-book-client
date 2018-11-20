@@ -201,7 +201,7 @@ export default class Weekly extends Component {
         const maxClassLogged = (att && Object.keys(att).reverse()[0]) || 0
         const max = totalSubjects > maxClassLogged ? totalSubjects : maxClassLogged
 
-        if(max == 0)
+        if(max === 0)
           subjects.push(
             <div className="att--classes-none" key="no-class">No classes found.</div>            
           )

@@ -46,7 +46,7 @@ class App extends React.Component {
     })
   }
 
-  getUser = (token) => {
+  getUser = token => {
     return axios
       .get('/user/current', {
         headers: {

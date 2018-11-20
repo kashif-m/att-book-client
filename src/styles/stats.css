@@ -40,11 +40,11 @@
 .overall--header {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 150px;
+  grid-auto-columns: 120px;
   padding: 20px 20px 10px 20px;
 
   font-family: PTSansBold;
-  font-size: 35px;
+  font-size: 30px;
 
   justify-content: space-around;
 
@@ -60,11 +60,11 @@
 .overall--data {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 150px;
+  grid-auto-columns: 120px;
 
   font-family: PTSansBold;
   color: #232528;
-  font-size: 20px;
+  font-size: 25px;
 
   padding-top: 10px;
 }
@@ -78,7 +78,7 @@
   margin-right: 20px;
   padding: 0 15px;
   border-radius: 3px;
-  font-size: 25px !important;
+  font-size: 28px !important;
   background-color: #232528;
   color: white;
 }

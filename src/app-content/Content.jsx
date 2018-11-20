@@ -38,7 +38,7 @@ export default class Content extends Component {
     return (
       <div className="content-wrap">
         {
-          state === 'today' ?
+          state === 'logger' ?
           <Logger
             token={this.props.token}
             timetable={this.state.timetable}
