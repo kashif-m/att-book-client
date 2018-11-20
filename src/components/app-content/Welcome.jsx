@@ -3,7 +3,7 @@ import CSSTransitionGroup from 'react-addons-css-transition-group'
 import axios from 'axios'
 
 // css
-import '../styles/Welcome.css'
+import '../../styles/Welcome.css'
 
 export default class Welcome extends Component {
 
@@ -11,10 +11,10 @@ export default class Welcome extends Component {
     super(props)
 
     this.state = {
-      showPopup: false,
+      generalError: {},
       popupState: '',
-      validationErrors: {},
-      generalError: {}
+      showPopup: false,
+      validationErrors: {}
     }
   }
 
@@ -24,10 +24,10 @@ export default class Welcome extends Component {
     if(this.password)
       this.password.value = ''
     this.setState({
-      showPopup: popup ? popup : true,
+      generalError: {},
       popupState: state,
-      validationErrors: {},
-      generalError: {}
+      showPopup: popup ? popup : true,
+      validationErrors: {}
     })
 
     // autofocus on email field
@@ -55,16 +55,16 @@ export default class Welcome extends Component {
       .catch(err => {
         const errors = err.response.data
         this.setState({
-          validationErrors: errors.msg ? {} : errors,
-          generalError: errors.msg ? errors : {}
+          generalError: errors.msg ? errors : {},
+          validationErrors: errors.msg ? {} : errors
         })
       })
   }
 
   clearErrors = () => {
     this.setState({
-      validationErrors: {},
-      generalError: {}
+      generalError: {},
+      validationErrors: {}
     })
   }
 
@@ -82,8 +82,8 @@ export default class Welcome extends Component {
       .catch(err => {
         const errors = err.response.data
         this.setState({
-          validationErrors: errors.msg ? {} : errors,
-          generalError: errors.msg ? errors : {}
+          generalError: errors.msg ? errors : {},
+          validationErrors: errors.msg ? {} : errors
         })
       })
   }
@@ -97,7 +97,7 @@ export default class Welcome extends Component {
     return (
       <div className="welcome-wrap" >
         <div className="main-cover">
-          <img className="spiral" src={require('../images/spiral_top.svg')} alt="LOGO"/>
+          <img className="spiral" src={require('../../images/spiral_top.svg')} alt="LOGO"/>
           <span className="heading" > ATTENDANCE NOTEBOOK </span>
         </div>
 
@@ -106,7 +106,7 @@ export default class Welcome extends Component {
           component="div"
           transitionName="popup"
           transitionEnterTimeout={350}
-          transitionLeaveTimeout={350}>
+          transitionLeaveTimeout={350} >
           {/* button-section */}
           <div className="buttons">
             <button className="login"
@@ -119,14 +119,14 @@ export default class Welcome extends Component {
           {
             this.state.showPopup ?
             <div className="popup">
-              <img src={require('../images/close.svg')} alt="x" className="close-popup"
-                onClick={() => this.setState({showPopup: false})}/>
+              <img src={require('../../images/close.svg')} alt="x" className="close-popup"
+                onClick={() => this.setState({showPopup: false})} />
               {/* general-error */}
               {
                 generalError.msg &&
                 <div className="general-error">
-                  <img src={require('../images/close-err.svg')} alt="x" className="close-err"
-                    onClick={() => this.setState({generalError: {}})}/>
+                  <img src={require('../../images/close-err.svg')} alt="x" className="close-err"
+                    onClick={() => this.setState({generalError: {}})} />
                   <span className="error">{generalError.msg}</span>
                 </div>
               }
@@ -175,7 +175,7 @@ export default class Welcome extends Component {
                       Forgot password? </div>
                       : null
                     }
-                    <img src={require('../images/continue.svg')} alt="->" className="submit"
+                    <img src={require('../../images/continue.svg')} alt="->" className="submit"
                       onClick={() => this.submit(popupState)} />
                   </div>
                 </div>
@@ -202,7 +202,7 @@ export default class Welcome extends Component {
                     validationErrors.email &&
                     ( <div className="email-error">{validationErrors.email}</div> )
                   }
-                  <img src={require('../images/continue.svg')} alt="->" className="submit"
+                  <img src={require('../../images/continue.svg')} alt="->" className="submit"
                       onClick={() => this.passwordReset()} />                  
                 </div>
                 : null

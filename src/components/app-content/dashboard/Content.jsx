@@ -2,10 +2,9 @@ import React, { Component } from 'react'
 import axios from 'axios'
 
 // UDTs
-import Stats from './Stats'
-import Calendar from './Calendar'
-import Profile from './Profile';
-import Logger from './Logger'
+import Logger from './content/Logger'
+import Stats from './content/Stats'
+import Profile from './content/Profile'
 
 export default class Content extends Component {
 

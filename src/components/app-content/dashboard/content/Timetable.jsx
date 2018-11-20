@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 
 // css
-import '../styles/Timetable.css'
+import '../../../../styles/Timetable.css'
 
 export default class Timetable extends Component {
 
@@ -229,7 +229,7 @@ export default class Timetable extends Component {
             Object.keys(this.state.popupAddSubject).length !== 0 && this.state.popupAddSubject.day === day
             ?
             <div className="row--subject--popup">
-              <img src={require('../images/close.svg')} alt="x"
+              <img src={require('../../../../images/close.svg')} alt="x"
                 onClick={() => this.setState({popupAddSubject: {}})}
                 className="popup-close" />
               <span className="popup--subject">
@@ -257,7 +257,7 @@ export default class Timetable extends Component {
                 ? this.renderSubjectInputs(this.day.value)
                 : null
               }
-              <img src={require('../images/continue.svg')} alt="continue"
+              <img src={require('../../../../images/continue.svg')} alt="continue"
                   className="button-continue" onClick={this.handleContinue} />
             </div>
             : null
@@ -338,9 +338,9 @@ export default class Timetable extends Component {
         <div className="savedtt" key="some" >
           <span className="savedtt--tag">Timetable</span>
           <div className="savedtt--options">
-            <img src={require('../images/edit.svg')} alt="edit" className="savedtt--options-edit"
+            <img src={require('../../../../images/edit.svg')} alt="edit" className="savedtt--options-edit"
               onClick={() => this.setState({showTTPopup: {type: 'edit'}})} />
-            <img src={require('../images/remove.svg')} alt="x" className="savedtt--options-remove"
+            <img src={require('../../../../images/remove.svg')} alt="x" className="savedtt--options-remove"
               onClick={() => this.removeTimetable()} />
           </div>
         </div>
@@ -365,7 +365,7 @@ export default class Timetable extends Component {
           Object.keys(this.state.showTTPopup).length !== 0
           ?
           <div className="tt--popup">
-            <img src={require('../images/close.svg')} className="popup-close"
+            <img src={require('../../../../images/close.svg')} className="popup-close"
               alt="x" onClick={() => this.clearStates()}/>
             <div className="tt--popup--content">
               {this.renderInputRows()}

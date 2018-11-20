@@ -157,11 +157,11 @@ export default class Daily extends Component {
 
   renderAttendanceOptions = classNo =>
       <div className="att--options">
-        <img src={require('../../images/attended.svg')} alt="attended"
+        <img src={require('../../../../../images/attended.svg')} alt="attended"
             className="att--options-attended" onClick={() => this.setAttendance(classNo, 'present')}/>
-        <img src={require('../../images/pending.svg')} alt="pending"
+        <img src={require('../../../../../images/pending.svg')} alt="pending"
             className="att--options-pending" onClick={() => this.setAttendance(classNo, 'pending')}/>
-        <img src={require('../../images/not-attended.svg')} alt="absent"
+        <img src={require('../../../../../images/not-attended.svg')} alt="absent"
             className="att--options-absent" onClick={() => this.setAttendance(classNo, 'absent')}/>
       </div>
 
@@ -178,7 +178,7 @@ export default class Daily extends Component {
   renderAttendanceStatus = (classNo, status) => 
       <div className="att--status">
         <span className={`att--status-${status}`}> {status.toUpperCase()} </span>
-        <img src={require('../../images/edit-attendance.svg')} alt="edit" className="att--status-edit"
+        <img src={require('../../../../../images/edit-attendance.svg')} alt="edit" className="att--status-edit"
             onClick={() => this.editAttendance(classNo)}/>
       </div>
 
@@ -224,12 +224,12 @@ export default class Daily extends Component {
     return(
       <div className="att--header">
         <div className="att--header--day">
-          <img src={require('../../images/arrow-left.svg')} alt="<-" className="att--header--day-prev"
+          <img src={require('../../../../../images/arrow-left.svg')} alt="<-" className="att--header--day-prev"
               onClick={this.prevDay} />
           <span className="att--header--day-current">
             {dateFns.format(selectedDate, 'dddd').toUpperCase()}
           </span>
-          <img src={require('../../images/arrow-right.svg')} alt="->" className="att--header--day-next"
+          <img src={require('../../../../../images/arrow-right.svg')} alt="->" className="att--header--day-next"
               onClick={this.advanceDay} />
         </div>
         <span className="att--header--month">{dateFns.format(selectedDate, 'MMMM D, YYYY').toUpperCase()}</span>

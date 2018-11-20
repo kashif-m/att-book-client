@@ -3,7 +3,7 @@ import axios from 'axios'
 import jwtDecode from 'jwt-decode'
 
 // css
-import './styles/password-reset.css'
+import '../styles/password-reset.css'
 
 export default class PasswordReset extends Component {
 
@@ -71,7 +71,7 @@ export default class PasswordReset extends Component {
     return (
       <div className="password-reset">
         <div className="header-wrap" >
-          <img src={require('./images/logo.svg')} alt="LOGO" className="logo"
+          <img src={require('../images/logo.svg')} alt="LOGO" className="logo"
               onClick={() => window.location.href = 'http://localhost:3002' } />
         </div>
         {
@@ -97,7 +97,7 @@ export default class PasswordReset extends Component {
                   <div className="error">{error}</div>
                   : null
                 }
-                <img src={require('./images/continue.svg')} alt="->" className="submit"
+                <img src={require('../images/continue.svg')} alt="->" className="submit"
                   onClick={() => this.submit()} />
               </div>
             }

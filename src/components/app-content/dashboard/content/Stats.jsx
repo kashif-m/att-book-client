@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import dateFns from 'date-fns'
 
 // css
-import '../styles/stats.css'
+import '../../../../styles/stats.css'
 
 export default class Stats extends Component {
 

@@ -2,12 +2,12 @@ import React from 'react'
 import axios from 'axios'
 import CSSTransitionGroup from 'react-addons-css-transition-group'
 
-// UDTs
+// UDCs
 import Dashboard from './app-content/Dashboard'
 import Welcome from './app-content/Welcome'
 
 // css
-import './styles/App.css'
+import '../styles/App.css'
 
 class App extends React.Component {
 
@@ -79,16 +79,12 @@ class App extends React.Component {
           component="div"
           transitionName="wait-anim"
           transitionEnterTimeout={500}
-          transitionLeaveTimeout={500}
-        >
-          {
-            this.state.wait && (<div className="wait">LOADING</div>)
-          }
+          transitionLeaveTimeout={500} >
+          { this.state.wait && (<div className="wait">LOADING</div>) }
         </CSSTransitionGroup>
         {
           this.state.token.length === 0
-          ?
-          <Welcome updateToken={this.updateToken} />
+          ? <Welcome updateToken={this.updateToken} />
           :
           <Dashboard
             user={this.state.user}

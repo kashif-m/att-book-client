@@ -174,11 +174,11 @@ export default class Weekly extends Component {
 
   renderAttendanceOptions = (date, classNo) =>
     <div className="att--options">
-      <img src={require('../../images/attended.svg')} alt="attended"
+      <img src={require('../../../../../images/attended.svg')} alt="attended"
           className="att--options-attended" onClick={() => this.setAttendance(date, classNo, 'present')}/>
-      <img src={require('../../images/pending.svg')} alt="pending"
+      <img src={require('../../../../../images/pending.svg')} alt="pending"
           className="att--options-pending" onClick={() => this.setAttendance(date, classNo, 'pending')}/>
-      <img src={require('../../images/not-attended.svg')} alt="absent"
+      <img src={require('../../../../../images/not-attended.svg')} alt="absent"
           className="att--options-absent" onClick={() => this.setAttendance(date, classNo, 'absent')}/>
     </div>
 
@@ -228,7 +228,7 @@ export default class Weekly extends Component {
                 {helpers.renderSubjectName(subject)}
               { attOptions ? this.renderAttendanceOptions(date, i) : null }
               {
-                attOptions ? <img src={require('../../images/edit-attendance.svg')}
+                attOptions ? <img src={require('../../../../../images/edit-attendance.svg')}
                   alt='edit' className="att--weekly--subjects-edit"
                   onClick={() => this.handleEdit(day, i, subject)}
                 /> : null
@@ -276,10 +276,10 @@ export default class Weekly extends Component {
     return (
       <div className="att--weekly--header" key="header" >
         <div className="att--weekly--header--main">
-          <img src={require('../../images/arrow-left.svg')} alt="<-" className="att--weekly--header--day-prev"
+          <img src={require('../../../../../images/arrow-left.svg')} alt="<-" className="att--weekly--header--day-prev"
               onClick={this.prevWeek} />
           <div className="att--weekly--header--week" key="week-number">WEEK&nbsp;#{dateFns.getISOWeek(date)}</div>
-          <img src={require('../../images/arrow-right.svg')} alt="->" className="att--weekly--header--day-next"
+          <img src={require('../../../../../images/arrow-right.svg')} alt="->" className="att--weekly--header--day-next"
               onClick={this.advanceWeek} />
         </div>
         <div className="att--weekly--header--range">

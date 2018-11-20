@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import Timetable from './Timetable'
 
 // css
-import '../styles/Profile.css'
+import '../../../../styles/Profile.css'
 
 export default class Profile extends Component {
   

@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 
 // css
-import '../styles/Dashboard.css'
+import '../../styles/Dashboard.css'
 
-// UDTs
-import Header from './Header'
-import Sidebar from './Sidebar'
-import Content from './Content'
+// UDCs
+import Header from './dashboard/Header'
+import Sidebar from './dashboard/Sidebar'
+import Content from './dashboard/Content'
 
 export default class Dashboard extends Component {
 
@@ -18,11 +18,10 @@ export default class Dashboard extends Component {
     }
   }
 
-  changeContentState = (state) => {
+  changeContentState = state =>
     this.setState({
       contentState: state
     })
-  }
 
   render() {
     return (

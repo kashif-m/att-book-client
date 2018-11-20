@@ -3,11 +3,11 @@ import dateFns from 'date-fns'
 import axios from 'axios'
 
 // UDCs
-import Daily from './Logger/Daily'
-import Weekly from './Logger/Weekly'
+import Daily from './logger/Daily'
+import Weekly from './logger/Weekly'
 
 // css
-import '../styles/Logger.css'
+import '../../../../styles/Logger.css'
 
 export default class Logger extends Component {
 

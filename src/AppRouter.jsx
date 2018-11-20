@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 // UDCs
-import App from './App'
-import NotFound from './NotFound'
-import PasswordReset from './PasswordReset'
+import App from './components/App'
+import NotFound from './components/NotFound'
+import PasswordReset from './components/PasswordReset'
 
 export default class AppRouter extends Component {
 

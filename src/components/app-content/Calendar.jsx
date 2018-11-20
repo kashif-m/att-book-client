@@ -133,8 +133,7 @@ export default class Calendar extends Component {
         <div
           className={`${dateFns.format(date, "dddd")} ${row} ${dateFns.isSameDay(date, selectedDate) ? ' active' : ''} cell`}
           key={date}
-          onClick={() => this.handleClick(cloneDate)}
-        >
+          onClick={() => this.handleClick(cloneDate)} >
           <span>{ dateFns.format(date, "D") }</span>
           {
             dateFns.isSameDay(date, selectedDate) && Object.keys(this.state.dayTimetable).length !== 0
