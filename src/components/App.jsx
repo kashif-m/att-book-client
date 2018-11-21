@@ -21,10 +21,6 @@ class App extends React.Component {
     }
   }
 
-  componentDidCatch(err, info) {
-    console.log(err, info)
-  }
-
   async componentDidMount() {
     
     const data = window.localStorage.getItem('att-book-user')
@@ -34,7 +30,13 @@ class App extends React.Component {
     this.setState({
       wait: true
     })
-    const result = await this.getUser(data)
+
+    let result
+    try {
+      result = await this.getUser(data)
+    } catch(err) {
+      console.log(err)
+    }
 
     if(result !== 'Unauthorized')
       this.setState({
@@ -46,8 +48,8 @@ class App extends React.Component {
     })
   }
 
-  getUser = token => {
-    return axios
+  getUser = token =>
+    axios
       .get('/user/current', {
         headers: {
           'Authorization': token
@@ -55,7 +57,6 @@ class App extends React.Component {
       })
       .then(res => res.data)
       .catch(err => err.response.data)
-  }
 
   updateToken = (token) => {
     this.setState({
@@ -65,11 +66,10 @@ class App extends React.Component {
     window.localStorage.setItem('att-book-user', token)
   }
 
-  wait = (bool) => {
+  wait = (bool) =>
     this.setState({
       wait: bool
     })
-  }
 
   render() {
     return (

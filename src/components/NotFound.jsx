@@ -13,7 +13,9 @@ export default function NotFound() {
       </div>
 
     <span className="info">
-      404. Page Not Found.
+      ERR 404
+      <br/>
+      Page Not Found.
     </span>
     </div>
   )

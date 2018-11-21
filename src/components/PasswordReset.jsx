@@ -12,7 +12,7 @@ export default class PasswordReset extends Component {
 
     this.state = {
       token: this.props.match.params.token,
-      state: 'valid',
+      state: '',
       error: ''
     }
   }
@@ -23,11 +23,8 @@ export default class PasswordReset extends Component {
     let decoded
     try {
       decoded = jwtDecode(token)
-      const data = {
-        passHash: decoded.passHash
-      }
       axios
-        .post('/password/verify', data, {
+        .post('/password/verify', {passHash: decoded.passHash}, {
           headers: {
             'Authorization': token
           }
@@ -70,9 +67,9 @@ export default class PasswordReset extends Component {
     const { state, error } = this.state
     return (
       <div className="password-reset">
-        <div className="header-wrap" >
+        <div className="header-wrap">
           <img src={require('../images/logo.svg')} alt="LOGO" className="logo"
-              onClick={() => window.location.href = 'http://localhost:3002' } />
+              onClick={() => window.location.href = 'http://localhost:3002'} />
         </div>
         {
           state === 'valid' || state === 'success' ?

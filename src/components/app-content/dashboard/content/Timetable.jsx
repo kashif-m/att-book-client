@@ -65,20 +65,6 @@ export default class Timetable extends Component {
     this.setState({
       timetable
     })
-
-    if(showTTPopup.type === 'edit') {
-      const editedTimetable = {...this.state.editedTimetable}
-      editedTimetable[this.state.popupAddSubject.day] = editedTimetable[this.state.popupAddSubject.day] || {}
-      const classes = {...editedTimetable[this.state.popupAddSubject.day.classes]} || {}
-      
-      if(subject.length !== 0)
-      classes[classNo] = subject
-      
-      editedTimetable[this.state.popupAddSubject.day][classNo] = classes[classNo]
-      this.setState({
-        editedTimetable
-      })
-    }
   }
 
   getAbbreviation = (val) => {
@@ -107,27 +93,16 @@ export default class Timetable extends Component {
   saveEdits = () => {
 
     const state = {...this.state}
-    const { timetable, editSubject, newSubject, editedTimetable, showTTPopup } = state
+    const { timetable, editSubject, newSubject } = state
     const day = editSubject.day
     const classNo = editSubject.classNo
 
-    if(newSubject.length !== 0) {
-      if(showTTPopup.type === 'edit') {
-        editedTimetable[day] = editedTimetable[day] || {}
-        editedTimetable[day][classNo] = newSubject
-      }
-      else
-        timetable[editSubject.day][editSubject.classNo] = newSubject
-    }
-    else {
-      if(showTTPopup.type === 'edit' && editedTimetable[day] && editedTimetable[day][classNo])
-        delete editedTimetable[day][classNo]
-      else
-        delete timetable[editSubject.day][editSubject.classNo]
-    }
+    if(newSubject.length !== 0)
+      timetable[day][classNo] = newSubject
+    else
+      delete timetable[day][classNo]
 
     this.setState({
-      editedTimetable,
       editSubject: {},
       timetable
     })
@@ -243,7 +218,7 @@ export default class Timetable extends Component {
                     <button className="button-add"
                         onClick={() => { this.day.value = parseInt(this.day.value, 10) - 1 }} > - </button>
                     <input type="number" defaultValue={1} ref={node => this.day = node}
-                        autoFocus={true}
+                        autoFocus={true} maxLength="2"
                         onKeyDown={key => {
                           if(key.keyCode === 13)
                             this.handleContinue()
@@ -273,7 +248,7 @@ export default class Timetable extends Component {
     if(this.state.showTTPopup.type === 'add')
       this.addTimetable(this.state.timetable)
     else if(this.state.showTTPopup.type === 'edit')
-      this.updateTimetable(this.state.editedTimetable)
+      this.updateTimetable(this.state.timetable)
   }
 
   addTimetable = (timetable) => {

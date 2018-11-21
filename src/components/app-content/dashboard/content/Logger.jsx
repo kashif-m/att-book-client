@@ -15,7 +15,7 @@ export default class Logger extends Component {
     super(props)
 
     this.state = {
-      format: 'daily',
+      format: 'weekly',
       attendance: {},
     }
   }
@@ -70,7 +70,6 @@ export default class Logger extends Component {
             />
           : null
         }
-
         <div className="viewer">
           <button className={`viewer--switch-daily ${this.state.format === 'daily' ? 'active': null}`}
             onClick={() => this.setState({format: 'daily'})} >DAILY</button>

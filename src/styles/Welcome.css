@@ -58,10 +58,10 @@
 .login, .register {
   font-family: PTSansBold;
   font-size: 40px;
-  color: rgb(36, 36, 36);
+  color: #010001;
 
-  border: 4px solid rgb(36, 36, 36);
-  background-color: rgba(245, 245, 245, 0);
+  border: 4px solid #010001;
+  background-color: transparent;
 }
 .login {
   margin-right: 2vw;
@@ -107,6 +107,8 @@
   grid-column: 1 / -1;
   grid-row: 2 / 3;
 
+  color: #010001;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -118,7 +120,7 @@
   font-size: 30px;
 }
 .popup-buttons .active {
-  background-color: rgb(36, 36, 36);
+  background-color: #010001;
   color: #fbfffe;
 
   transition: all .25s ease;
@@ -155,13 +157,19 @@
 
 .popup input {
   border: 0;
-  border-bottom: 1px solid gray;
+  border-bottom: 2px solid #ecebe4;
 
   align-self: flex-start;
   padding: 10px;
   background-color: #fbfffe;
 
   font-size: 17px;
+  transition: all .15s;
+}
+.popup input:focus {
+  border-bottom: 2px solid #848586;
+
+  transition: all .15s;
 }
 
 .last-row {
@@ -169,9 +177,16 @@
   grid-template-columns: repeat(2, 110px);
   /* justify-self: normal; */
 }
-.last-row > :first-child {
+.last-row > div:first-child {
   grid-column: 1 / 2;
   cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  background-color: #010001;
+  padding: 5px 2px 5px 2px;
+  border-radius: 3px;
+  color: #fbfffe;
 
   align-self: center;
 }
@@ -189,11 +204,14 @@
 .fg--heading {
   font-size: 40px;
 
+  color: #010101;
+  width: 110%;
   padding-bottom: 10px;
-  border-bottom: 2px solid #e5e5e5;
+  border-bottom: 2px solid #bfc0c0;
 }
 .forgot-password input {
-  margin-top: 20px;
+  margin-top: 70px;
+  color: #010101;
 }
 .forgot-password .submit {
   margin: 40px 0 0 150px;
@@ -203,8 +221,16 @@
   margin: 5px 0 0 5px;
 }
 .forgot-password .info {
-  margin-top: 10px;
+  margin-top: 60px;
   font-size: 20px !important;
+}
+.forgot-password > div {
+  display: flex;
+  flex-flow: row;
+  font-size: 20px;
+}
+.forgot-password > div > div {
+  cursor: pointer;
 }
 
 .submit {
@@ -221,7 +247,7 @@
 
 /* errors */
 .email-error, .password-error {
-  color: #fb3640;
+  color: #ef0a02;
 }
 .password-error {
   max-width: 220px;
@@ -239,7 +265,7 @@
 }
 .general-error .error {
   align-self: center;
-  background-color: #fb3640;
+  background-color: #ef0a02;
   color: #fbfffe;
   font-size: 20px;
   font-family: PTSansBold;

@@ -196,7 +196,7 @@ export default class Welcome extends Component {
                 <div className="forgot-password">
                   <span className="fg--heading">Password Reset</span>
                   <input type="text" id="email" autoFocus={true}
-                    placeholder='E-mail'
+                    placeholder='E-mail' onKeyDown={key => key.keyCode === 13 && this.passwordReset()}
                     ref={node => this.email = node} />
                   {
                     validationErrors.email &&
@@ -213,6 +213,9 @@ export default class Welcome extends Component {
                 <div className="forgot-password">
                   <span className="fg--heading">Password Reset</span>
                   <span className="info">Please check your e-mail.</span>
+                  <div>
+                    Click&nbsp;<div onClick={() => this.setState({popupState: 'login'})} >here</div>&nbsp;to login.
+                  </div>
                 </div>
                 : null
               }

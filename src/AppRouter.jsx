@@ -8,6 +8,10 @@ import PasswordReset from './components/PasswordReset'
 
 export default class AppRouter extends Component {
 
+  componentDidCatch(err, info) {
+    console.log(err, info)
+  }
+
   render() {
   
     return (

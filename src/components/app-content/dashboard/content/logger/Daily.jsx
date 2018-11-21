@@ -175,11 +175,30 @@ export default class Daily extends Component {
     })
   }
 
+  removeAttendance = classNo => {
+
+    const date = dateFns.format(this.state.selectedDate, 'YYYY-MM-DD')
+    const data = {
+      date,
+      classNo
+    }
+    axios
+      .post('/attendance/remove', data, {
+        headers: {
+          'Authorization': this.props.token
+        }
+      })
+      .then(res => res.status === 200 && this.props.fetchWeekAttendance(date))
+      .catch(err => console.log(err.response.data))
+  }
+
   renderAttendanceStatus = (classNo, status) => 
       <div className="att--status">
         <span className={`att--status-${status}`}> {status.toUpperCase()} </span>
         <img src={require('../../../../../images/edit-attendance.svg')} alt="edit" className="att--status-edit"
             onClick={() => this.editAttendance(classNo)}/>
+        <img src={require('../../../../../images/close-err.svg')} className="att--status-remove" alt="x"
+            onClick={() => this.removeAttendance(classNo)} />
       </div>
 
   renderSubjects = () => {
@@ -197,8 +216,8 @@ export default class Daily extends Component {
       )
 
     for(let i = 1; i <= max; i++) {
-      const data = attendance[i] || dayTimetable[i]
-      const subject = data.subject || data
+      const data = attendance[i] || dayTimetable[i] || undefined
+      const subject = (data && data.subject) || data
       subjects.push(
         data &&
         <div className="att--daily--subject_row" key={i}>

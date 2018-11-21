@@ -1,10 +1,8 @@
-
-
 .att {
   display: grid;
   grid-template-columns: min-content auto;
   align-self: flex-start;
-  color: #001514;
+  color: #010001;
   margin-left: 100px;
 }
 
@@ -12,13 +10,14 @@
 /* header wrap */
 .att--header {
   font-family: PTSansBold;
-  color: #001514;
+  color: #010001;
 
   display: grid;
   grid-auto-flow: row;
 
   padding: 20px 40px;
   margin-left: 40px;
+  margin-right: 40px;
 }
 
 
@@ -27,7 +26,7 @@
   justify-self: center;
   font-size: 20px;
 
-  color: #252625;
+  color: #3a3a3a;
 }
 
 /* week header */
@@ -60,7 +59,8 @@
   font-size: 45px;
   padding-bottom: 10px;
   margin-top: 40px;
-  border-bottom: 2px solid #bac1b8;
+  border-bottom: 2px solid #ecebe4;
+  color: #010001;
 }
 
 
@@ -68,10 +68,27 @@
 
 
 
+.att--daily {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+
+  padding-bottom: 80px;
+  box-shadow: #bfc0c0 0 50px 100px -50px, #bfc0c0 80px 80px 100px -100px, #bfc0c0 -80px 80px 100px -100px;
+
+  max-height: 70vh;
+  overflow: hidden;
+}
 /* attendance subject wrap */
 .att--daily--subject {
   display: flex;
   flex-flow: column;
+
+  width: 100%;
+  overflow-y: scroll;
+  padding-right: 28px;
+  padding-left: 28px;
+  box-sizing: content-box;
 }
 .att--daily--subject > :first-child {
   margin-top: 0;
@@ -79,9 +96,10 @@
 .att--classes-none {
   font-family: PTSansBold;
   font-size: 25px;
-  color: #bac1b8;
+  color: #727072;
   
-  margin-left: 70px;
+  justify-self: center;
+  margin-left: 110px;
 }
 .att--daily--subject_row {
   display: grid;
@@ -101,7 +119,7 @@
   font-size: 30px;
   font-weight: 900;
   color: #fbfffe;
-  background-color: #394f49;
+  background-color: #4b5358;
   
   align-self: center;
   justify-self: flex-end;
@@ -117,9 +135,9 @@
   font-size: 15px;
   
   font-family: PTSansBold;
-  background-color: #fbfffe;
+  background-color: transparent;
   border: 0;
-  color: #bac1b8;
+  color: #bfc0c0;
 
   margin-left: 100px;
   align-self: flex-start;
@@ -129,7 +147,7 @@
 }
 .att--subject-edit:focus {
   font-size: 20px;
-  color: #001514;
+  color: #010001;
   transition: all .15s;
 }
 .att--options {
@@ -164,7 +182,7 @@
   display: flex;
   flex-flow: row;
 }
-.att--status-edit {
+.att--status-edit, .att--status-remove {
   cursor: pointer;
 
   height: 15px;
@@ -173,7 +191,7 @@
   
   transition: all .15s;
 }
-.att--status-edit:hover {
+.att--status-edit:hover, .att--status-remove:hover {
   height: 20px;
   margin-left: 6px;
   transition: all .15s;
@@ -187,13 +205,13 @@
   font-size: 20px;
 }
 .att--status-present {
-  background-color: #317b22;
+  background-color: #5a8908;
 }
 .att--status-absent {
-  background-color: #e3170a;
+  background-color: #ef0a02;
 }
 .att--status-pending {
-  background-color: #faa916;
+  background-color: #faa613;
 }
 
 
@@ -223,13 +241,13 @@
   border-radius: 3px;
   
   background-color: #fbfffe;
-  color: #001514;
+  color: #010001;
 
   font-family: PTSansBold;
   font-size: 25px;
 }
 .viewer .active {
-  background-color: #001514;
+  background-color: #010001;
   color: #fbfffe;
 }
 
@@ -257,7 +275,7 @@
 
   font-family: PTSansBold;
 
-  border-bottom: 2px solid #bac1b8;
+  border-bottom: 2px solid #ecebe4;
 }
 .att--weekly--header--main {
   display: flex;
@@ -278,6 +296,8 @@
   font-size: 20px;
   display: flex;
   justify-content: center;
+
+  color: #3a3a3a;
 }
 
 
@@ -298,7 +318,7 @@
   margin: 10px 0 10px 0;
   font-family: PTSansBold;
 
-  background-color: #251605;
+  background-color: #010001;
   color: #fbfffe;
   padding: 5px 20px 5px 20px;
   border-radius: 4px;
@@ -355,13 +375,13 @@
   margin: 5px;
 }
 .att--weekly--subjects_row_wrap-present > .helper-subject-abbreviation {
-  background-color: #317b22;
+  background-color: #5a8908;
 }
 .att--weekly--subjects_row_wrap-absent > .helper-subject-abbreviation {
-  background-color: #e3170a;
+  background-color: #ef0a02;
 }
 .att--weekly--subjects_row_wrap-pending > .helper-subject-abbreviation {
-  background-color: #ffa400;
+  background-color: #faa613;
 }
 .att--weekly--subjects-edit {
   cursor: pointer;

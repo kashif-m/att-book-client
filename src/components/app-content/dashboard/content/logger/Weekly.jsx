@@ -105,9 +105,7 @@ export default class Weekly extends Component {
       id={`edit-subject-${classNo}`} defaultValue={subject}
       autoFocus={true}
       onChange={text => this.setState({newSubject: text.target.value})}
-      onBlur={() => {
-        this.updateSubject(day, classNo)
-      }}
+      onBlur={() => this.updateSubject(day, classNo) }
       onKeyDown={key => key.keyCode === 13 && key.target.blur()} />
 
   handleEdit = (day, classNo, subject) => {
@@ -120,13 +118,12 @@ export default class Weekly extends Component {
       attendance[day] = attendance[day] || {}
       attendance[day][classNo] = {subject}
     }
+    const attSubEdit = {
+      day, classNo, subject
+    }
     this.setState({
       attendance,
-      attSubEdit: {
-        day,
-        classNo,
-        subject
-      }
+      attSubEdit
     })
   }
 
@@ -187,13 +184,13 @@ export default class Weekly extends Component {
     const startOfWeek = this.state.selectedWeek
     const endOfWeek = dateFns.endOfISOWeek(startOfWeek)
     const subjectsWrap = []
+    const state = {...this.state}
+    const { attendance, timetable, attOptionsPopup, attSubEdit } = state
     let date = startOfWeek
     
     while(!dateFns.isSameDay(date, endOfWeek)) {
 
         const subjects = []
-        const state = {...this.state}
-        const { attendance, timetable } = state
         const day = dateFns.format(date, 'dddd')
         const att = (attendance && attendance[day]) || {}
         const dayTimetable = (timetable && timetable[day]) || {}
@@ -209,14 +206,21 @@ export default class Weekly extends Component {
         for(let i = 1; i <= max; i++) {
           const data = att[i] || dayTimetable[i]
           const subject = (data && data.subject) || data
-          let attSubEdit = Object.keys(this.state.attSubEdit).length > 0 &&
-              this.state.attSubEdit.subject === subject &&
-              this.state.attSubEdit.classNo === i &&
-              this.state.attSubEdit.day === day ? true : false
-          let attOptions = !attSubEdit && Object.keys(this.state.attOptionsPopup).length > 0 &&
-              this.state.attOptionsPopup.subject === subject &&
-              this.state.attOptionsPopup.classNo === i &&
-              this.state.attOptionsPopup.day === day ? true : false
+          let attSub = Object.keys(attSubEdit).length > 0 &&
+              attSubEdit.subject === subject &&
+              attSubEdit.classNo === i &&
+              attSubEdit.day === day ? true : false
+          let editOptions = !attSub && Object.keys(attOptionsPopup).length > 0 &&
+              attOptionsPopup.subject === subject &&
+              attOptionsPopup.classNo === i &&
+              attOptionsPopup.day === day ? true : false
+
+          let attOptions = !attSub && Object.keys(attOptionsPopup).length > 0 &&
+              attOptionsPopup.subject === subject &&
+              attOptionsPopup.classNo === i &&
+              attOptionsPopup.day === day ? !att[i] ? true
+                : ((att[i] && !att[i].status) ? true : false)
+                : false
 
           data &&
             subjects.push(
@@ -228,20 +232,19 @@ export default class Weekly extends Component {
                 {helpers.renderSubjectName(subject)}
               { attOptions ? this.renderAttendanceOptions(date, i) : null }
               {
-                attOptions ? <img src={require('../../../../../images/edit-attendance.svg')}
+                editOptions ? <img src={require('../../../../../images/edit-attendance.svg')}
                   alt='edit' className="att--weekly--subjects-edit"
                   onClick={() => this.handleEdit(day, i, subject)}
                 /> : null
               }
-              { attSubEdit ? this.renderSubjectEdit(day, i, subject) : null }
+              { attSub ? this.renderSubjectEdit(day, i, subject) : null }
             </div>
           )
         }
 
         subjectsWrap.push(
           <div className="att--weekly--subjects_row" key={`${day}`}
-          onMouseLeave={() => this.setState({attOptionsPopup: {}})}     
-          >{subjects}</div>
+            onMouseLeave={() => this.setState({attOptionsPopup: {}})} >{subjects}</div>
         )
       
       date = dateFns.addDays(date, 1)

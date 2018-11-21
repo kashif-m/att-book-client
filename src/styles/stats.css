@@ -11,9 +11,9 @@
 
 .stats--header {
   font-family: openSansBold;
-  color: #0d1321;
+  color: #010001;
   font-size: 50px;
-  border-bottom: 2px solid #e5e5e5;
+  border-bottom: 2px solid #ecebe4;
   justify-self: flex-start;
 }
 
@@ -30,7 +30,7 @@
 .no--logs {
   font-size: 30px;
   width: 400px;
-  color: #bac1b8;
+  color: #727072;
 }
 
 .overall > .overall--data:first-child {
@@ -48,7 +48,7 @@
 
   justify-content: space-around;
 
-  border-bottom: 2px solid #e5e5e5;
+  border-bottom: 2px solid #ecebe4;
 }
 .overall--header > * {
   justify-self: center;
@@ -63,7 +63,7 @@
   grid-auto-columns: 120px;
 
   font-family: PTSansBold;
-  color: #232528;
+  color: #010001;
   font-size: 25px;
 
   padding-top: 10px;
@@ -80,7 +80,7 @@
   border-radius: 3px;
   font-size: 28px !important;
   background-color: #232528;
-  color: white;
+  color: #fbfffe;
 }
 
 .overall--footer {
