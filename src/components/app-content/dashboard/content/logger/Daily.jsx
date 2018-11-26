@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import dateFns from 'date-fns'
+import CSSTransitionGroup from 'react-addons-css-transition-group'
 
 // helpers
 import helpers from './AttendanceHelpers'
@@ -15,11 +16,18 @@ export default class Daily extends Component {
     const day = dateFns.format(date, 'DDDD')
 
     this.state = {
-      selectedDate: date,
+      selectedDate: this.setDate(),
       attendance: attendance[day] || {},
       dayTimetable: timetable[day] || {},
       newSubject: ''
     }
+  }
+
+  setDate = () => {
+    const date = new Date()
+    return dateFns.format(date, 'dddd') !== 'Sunday'
+        ? date
+        : dateFns.addDays(date, 1)
   }
 
   componentDidMount() {
@@ -41,7 +49,7 @@ export default class Daily extends Component {
         await this.props.fetchWeekAttendance(nextState.selectedDate)
       this.updateDayAttendance(nextState.selectedDate)
       this.updateDayTimetable(nextState.selectedDate)
-      return false
+      return true
     }
 
     // when attendance is updated
@@ -74,34 +82,38 @@ export default class Daily extends Component {
 
   advanceDay = () => {
     this.setState(prevState => {
+      let date = dateFns.addDays(prevState.selectedDate, 1)
+      date = dateFns.format(date, 'dddd') === 'Sunday' ? dateFns.addDays(date, 1) : date
       return {
-        selectedDate: dateFns.addDays(prevState.selectedDate, 1)
+        selectedDate: date
       }
     })
   }
 
   prevDay = () => {
     this.setState(prevState => {
+      let date = dateFns.subDays(prevState.selectedDate, 1)
+      date = dateFns.format(date, 'dddd') === 'Sunday' ? dateFns.subDays(date, 1) : date
       return {
-        selectedDate: dateFns.subDays(prevState.selectedDate, 1)
+        selectedDate: date
       }
     })
   }
 
   updateSubject = classNo => {
 
-    const attendance = {...this.state.attendance}
+    let attendance = this.state.attendance
     const newSubject = this.state.newSubject
     if(newSubject.length !== 0) {
 
       if(attendance[classNo] && !attendance[classNo].status) {
-        attendance[classNo].subject = newSubject
+        const attStatus = {...this.state.attendance[classNo], subject: newSubject}
+        attendance = {...this.state.attendance, [classNo]: attStatus}
         this.setState({
           attendance
         })
       } else {
-        const dayTimetable = {...this.state.dayTimetable}
-        dayTimetable[classNo] = newSubject
+        const dayTimetable = {...this.state.dayTimetable, [classNo]: newSubject}
         this.setState({
           dayTimetable
         })
@@ -145,11 +157,7 @@ export default class Daily extends Component {
       })
       .then(res => {
         if(res.status === 200) {
-          attendance[classNo] = {
-            subject: data.subject,
-            status
-          }
-          this.setState({ attendance })
+          this.props.fetchWeekAttendance(date)
         }
       })
       .catch(err => console.log(err.response.data))
@@ -167,11 +175,13 @@ export default class Daily extends Component {
 
   editAttendance = classNo => {
     
-    const attendance = {...this.state.attendance}
-    delete attendance[classNo].status
+    const attStatus = {...this.state.attendance[classNo], status: null}
+    const attendance = {...this.state.attendance, [classNo]: attStatus}
+    const newSubject = this.state.attendance[classNo].subject
 
     this.setState({
-      attendance
+      attendance,
+      newSubject
     })
   }
 
@@ -245,9 +255,15 @@ export default class Daily extends Component {
         <div className="att--header--day">
           <img src={require('../../../../../images/arrow-left.svg')} alt="<-" className="att--header--day-prev"
               onClick={this.prevDay} />
-          <span className="att--header--day-current">
-            {dateFns.format(selectedDate, 'dddd').toUpperCase()}
-          </span>
+          <CSSTransitionGroup
+            component="div"
+            className="att--header--day-current"
+            transitionName="day--anim"
+            transitionEnterTimeout={350}
+            transitionLeaveTimeout={350}
+          >
+            <span key={selectedDate}> {dateFns.format(selectedDate, 'dddd').toUpperCase()} </span>
+          </CSSTransitionGroup>
           <img src={require('../../../../../images/arrow-right.svg')} alt="->" className="att--header--day-next"
               onClick={this.advanceDay} />
         </div>

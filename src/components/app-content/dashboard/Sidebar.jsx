@@ -5,10 +5,10 @@ export default class Sidebar extends Component {
   render() {
 
     const state = this.props.contentState
-    const todayClass = state === 'logger' ? 'today active' : 'today'
-    const statsClass = state === 'stats' ? 'statsistics active' : 'statistics'
-    const profileClass = state === 'profile' ? 'profile active' : 'profile'
-    
+    const todayClass = state === 'logger' ? 'active' : ''
+    const statsClass = state === 'stats' ? 'active' : ''
+    const profileClass = state === 'profile' ? 'active' : ''
+
     return (
       <div className="side-wrap">
         <div className="list">

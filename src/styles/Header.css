@@ -3,10 +3,13 @@
   grid-column: 1 / -1;
   grid-row: 1 / 2;
 
-  padding: 1rem;
+  padding: 20px;
+  margin-bottom: 40px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   background-color: #fbfffe;
+
+  box-shadow: #ecebe4 0 0 100px;
 }
 
 .logo {
@@ -23,6 +26,7 @@
   height: 40px;
 
   justify-self: center;
+  align-self: center;
 }
 
 

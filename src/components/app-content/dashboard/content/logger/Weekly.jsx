@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import dateFns from 'date-fns'
+import CSSTransitionGroup from 'react-addons-css-transition-group'
 
 // helpers
 import helpers from './AttendanceHelpers'
@@ -10,7 +11,8 @@ export default class Weekly extends Component {
   constructor(props) {
     super(props)
 
-    const date = new Date()
+    let date = new Date()
+    date = dateFns.format(date, 'dddd') === 'Sunday' ? dateFns.addDays(date, 1) : date
     const { attendance, timetable } = this.props
 
     this.state = {
@@ -34,17 +36,17 @@ export default class Weekly extends Component {
       this.updateTimetable(nextProps.timetable)
       return false
     }
-
+    
     if(this.state.selectedWeek !== nextState.selectedWeek) {
       this.props.fetchWeekAttendance(nextState.selectedWeek)
       return false
     }
-
+    
     if(JSON.stringify(this.props.attendance) !== JSON.stringify(nextProps.attendance)) {
       this.updateAttendance(nextProps.attendance)
       return false
     }
-
+    
     return true
   }
 
@@ -151,12 +153,7 @@ export default class Weekly extends Component {
       })
       .then(res => {
         if(res.status === 200) {
-          attendance[day] = attendance[day] || {}
-          attendance[day][classNo] = {
-            subject: data.subject,
-            status
-          }
-          this.setState({ attendance })
+          this.props.fetchWeekAttendance(date)
         }
       })
       .catch(err => console.log(err.response.data))
@@ -281,7 +278,18 @@ export default class Weekly extends Component {
         <div className="att--weekly--header--main">
           <img src={require('../../../../../images/arrow-left.svg')} alt="<-" className="att--weekly--header--day-prev"
               onClick={this.prevWeek} />
-          <div className="att--weekly--header--week" key="week-number">WEEK&nbsp;#{dateFns.getISOWeek(date)}</div>
+          <div className="att--weekly--header--week" key="week-number">
+            WEEK&nbsp;#
+            <CSSTransitionGroup
+              component="div"
+              className="week-number"
+              transitionName="week-number-anim"
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={0}
+            >
+              <span key={date} >{dateFns.format(date, 'WW')}</span>
+            </CSSTransitionGroup>
+          </div>
           <img src={require('../../../../../images/arrow-right.svg')} alt="->" className="att--weekly--header--day-next"
               onClick={this.advanceWeek} />
         </div>

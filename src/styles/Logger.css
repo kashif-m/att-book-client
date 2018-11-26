@@ -13,7 +13,7 @@
   color: #010001;
 
   display: grid;
-  grid-auto-flow: row;
+  grid-template-rows: 70px repeat(2, auto);
 
   padding: 20px 40px;
   margin-left: 40px;
@@ -33,13 +33,23 @@
 .att--header--day {
   display: flex;
   justify-content: space-between;
+  
+  overflow: hidden;
 }
 .att--header--day img {
   height: 30px;
 }
 .att--header--day-current {
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+
+  width: min-content;
   font-size: 50px;
   margin: 0 20px 0 20px;
+}
+.att--header--day-current span {
+  width: min-content;
 }
 
 .att--header--day-prev, .att--header--day-next {
@@ -55,10 +65,9 @@
   min-width: 300px;
   width: max-content;
   max-width: 500px;
-  margin: 0 20px 0 20px;
+  margin: 20px 20px 0 20px;
   font-size: 45px;
   padding-bottom: 10px;
-  margin-top: 40px;
   border-bottom: 2px solid #ecebe4;
   color: #010001;
 }
@@ -73,7 +82,7 @@
   flex-flow: column;
   align-items: center;
 
-  padding-bottom: 80px;
+  padding-bottom: 40px;
   box-shadow: #bfc0c0 0 50px 100px -50px, #bfc0c0 80px 80px 100px -100px, #bfc0c0 -80px 80px 100px -100px;
 
   max-height: 70vh;
@@ -94,7 +103,7 @@
   margin-top: 0;
 }
 .att--classes-none {
-  font-family: PTSansBold;
+  font-family: openSansLight;
   font-size: 25px;
   color: #727072;
   
@@ -260,16 +269,21 @@
 /* weekly wrap */
 .att--weekly {
   display: grid;
-  grid-template-columns: min-content auto;
-  grid-template-rows: repeat(2, min-content);
+  grid-template-columns: min-content repeat(2, auto);
+  grid-template-rows: 180px min-content;
+
+  width: min-content;
+  padding-bottom: 30px;
+
+  box-shadow: #bfc0c0 0 100px 1000px -200px, #bfc0c0 90px 130px 90px -130px, #bfc0c0 -90px 130px 90px -130px;
 }
 
 
 .att--weekly--header {
-  grid-column: 1 / 3;
+  grid-column: 1 / -1;
   grid-row: 1 / 2;
 
-  padding: 20px 40px 40px 40px;
+  padding: 20px 40px 0 40px;
   margin: 0 0 30px 40px;
   justify-self: flex-start;
 
@@ -283,10 +297,18 @@
   justify-content: space-around;
   align-items: center;
   
+  overflow-y: hidden;
   font-size: 50px;
 }
 .att--weekly--header--week {
   margin: 0 40px 0 40px;
+  display: flex;
+  flex-flow: row;
+  height: 70px;
+}
+.week-number {
+  display: flex;
+  flex-flow: column;
 }
 .att--weekly--header img {
   height: 30px;
@@ -306,7 +328,7 @@
   grid-column: 1 / 2;
   grid-row: 2 / 3;
 
-  margin-right: 40px;
+  margin: 0 20px 0 20px;
 
   justify-self: center;
   display: grid;
@@ -333,11 +355,13 @@
 
 /* weekly subjects */
 .att--weekly--subjects {
-  grid-column: 2 / 3;
+  grid-column: 2 / 4;
   grid-row: 2 / 3;
 
   display: grid;
-  grid-auto-flow: row;
+  grid-auto-rows: auto;
+
+  margin: 0 20px 0 20px;
 }
 
 .att--weekly--subjects_row {
@@ -400,4 +424,47 @@
 .att--weekly--subjects-edit:hover {
   height: 13px;
   transition: all .15s;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* animations */
+.day--anim-enter {
+  font-size: 0px;
+  opacity: 0;
+  transform: translateY(120%);
+}
+.day--anim-enter.day--anim-enter-active {
+  font-size: 50px;
+  opacity: 1;
+  transform: translateY(0);
+
+  transition: all .35s;
+}
+.day--anim-leave {
+  opacity: 1;
+  transform: translateY(0);
+}
+.day--anim-leave.day--anim-leave-active {
+  opacity: 0;
+  font-size: 0;
+  transform: translateY(120%);
+
+  transition: all .35s;
+}
+
+.week-number-anim-enter {
+  opacity: 0;
+}
+.week-number-anim-enter.week-number-anim-enter-active {
+  opacity: 1;
+  transition: all .5s;
 }

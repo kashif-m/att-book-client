@@ -12,12 +12,25 @@ export default class Content extends Component {
     super(props)
 
     this.state = {
-      timetable: {}
+      timetable: {},
+      overallAttendance: {}
     }
   }
 
   componentDidMount() {
     this.fetchTimetable()
+    this.fetchOverall()
+  }
+
+  fetchOverall = () => {
+    axios
+    .get('/stats/overall', {
+      headers: {
+        'Authorization': this.props.token
+      }
+    })
+    .then(res => this.setState({overallAttendance: res.data}))
+    .catch(err => console.log(err.response.data))
   }
 
   fetchTimetable = () => {
@@ -34,13 +47,18 @@ export default class Content extends Component {
   render() {
 
     const state = this.props.contentState
+    const style = {
+      overflow: 'hidden'
+    }
     return (
-      <div className="content-wrap">
+      <div className="content-wrap" style={style} >
         {
           state === 'logger' ?
           <Logger
             token={this.props.token}
             timetable={this.state.timetable}
+            // functions
+            updateAttendance={this.fetchOverall}
           />
           : state === 'profile' ?
           <Profile
@@ -50,7 +68,7 @@ export default class Content extends Component {
           />
           : state === 'stats' ?
           <Stats
-            token={this.props.token}
+            overallAttendance={this.state.overallAttendance}
           />
           : null
         }

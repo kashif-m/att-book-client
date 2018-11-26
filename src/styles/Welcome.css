@@ -293,12 +293,12 @@
 
 /* media queries */
 @media only screen and (min-width: 1400px) {
-  span {
+  .heading {
     font-size: 6vw;
   }
 }
 @media only screen and (max-width: 600px) {
-  span {
+  .heading {
     font-size: 7vw;
   }
   .login, .register {

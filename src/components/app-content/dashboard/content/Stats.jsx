@@ -1,37 +1,15 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 
 // css
 import '../../../../styles/stats.css'
 
 export default class Stats extends Component {
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      overall: {}
-    }
-  }
-
-  componentDidMount() {
-    this.fetchOverall()
-  }
-
-  fetchOverall = () => {
-    axios
-    .get('/stats/overall', {
-      headers: {
-        'Authorization': this.props.token
-      }
-    })
-    .then(res => this.setState({overall: res.data}))
-    .catch(err => console.log(err.response.data))
-  }
+  round = value => Number(Math.round(value+'e'+2) +'e-'+2)
 
   renderOverallFooter = () => {
 
-    const overall = this.state.overall
+    const overall = this.props.overallAttendance
     const totalClasses = Object.keys(overall).reduce((total, subject) => total + overall[subject].total, 0)
     const totalPresent = Object.keys(overall).reduce((total, subject) => total + overall[subject].present, 0)
     const totalPending = Object.keys(overall).reduce((total, subject) => total + overall[subject].pending, 0)
@@ -58,12 +36,10 @@ export default class Stats extends Component {
       <div className="header--perc">Attendance</div>
     </div>
 
-  round = value => Number(Math.round(value+'e'+2) +'e-'+2)
-
   renderOverall = () => {
 
     const overall = []
-    const data = this.state.overall
+    const data = this.props.overallAttendance
     if(Object.keys(data).length === 0)
       overall.push(
           <div className="no--logs" key='no log' >No attendance logged.</div>

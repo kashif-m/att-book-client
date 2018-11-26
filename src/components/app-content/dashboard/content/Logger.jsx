@@ -21,22 +21,26 @@ export default class Logger extends Component {
   }
 
   componentDidMount() {
-    this.fetchWeekAttendance(new Date())
+    let date = new Date()
+    date = dateFns.format(date, 'dddd') === 'Sunday' ? dateFns.addDays(date, 1) : date
+    this.fetchWeekAttendance(date)
   }
 
   shouldComponentUpdate(nextProps, nextState) {
 
     if(this.state.format !== nextState.format) {
-      this.fetchWeekAttendance(new Date())
+      let date = new Date()
+      date = dateFns.format(date, 'dddd') === 'Sunday' ? dateFns.addDays(date, 1) : date  
+      this.fetchWeekAttendance(date)
       return false
     }
-
     return true
   }
 
   fetchWeekAttendance = date => {
+    this.props.updateAttendance()
     axios
-      .get(`/attendance/${dateFns.format(dateFns.startOfWeek(date), 'YYYY-MM-DD')}/getWeekly`, {
+      .get(`/attendance/${dateFns.format(dateFns.startOfISOWeek(date), 'YYYY-MM-DD')}/getWeekly`, {
         headers: {
           'Authorization': this.props.token
         }
