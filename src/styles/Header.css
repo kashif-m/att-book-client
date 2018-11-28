@@ -7,9 +7,7 @@
   margin-bottom: 40px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  background-color: #fbfffe;
-
-  box-shadow: #ecebe4 0 0 100px;
+  background: linear-gradient(#f1fefa 2px, #fbfffe);
 }
 
 .logo {

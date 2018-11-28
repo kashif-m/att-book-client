@@ -139,3 +139,84 @@
 
   transition: all .25s;
 }
+
+
+ 
+@media only screen and (max-width: 500px) {
+
+  .profile--heading, .profile--content {
+    margin: 0;
+    padding: 0 0 0 10px;
+  }
+  .profile--content {
+    width: calc(100% - 10px);
+
+    grid-gap: 20px;
+    grid-template-columns: calc(100% - 10px);
+    padding-top: 20px !important;
+  }
+  .profile--content > * {
+    margin-left: 20px;
+  }
+
+  .timetable--heading, .delete--heading {
+    font-size: 20px;
+  }
+  .tt--content--savedtt {
+    padding: 10px;
+    width: calc(100% - 35px);
+  }
+  .tt--content--savedtt > * {
+    font-size: 17px;
+  }
+  .tt--content--savedtt .empty {
+    align-self: center;
+  }
+  .tt--content--savedtt-add {
+    font-size: 13px;
+    padding: 2px 10px 2px 10px;
+  }
+  .tt--content--savedtt-add:hover {
+    padding: 2px 10px 2px 10px;
+    background-color: #fbfffe;
+    color: #010001;
+  }
+  .delete--content {
+    width: calc(100% - 25px);
+  }
+  .content--info {
+    font-size: 17px;
+    padding: 10px;
+  }
+  .content--delete_account {
+    padding: 0 10px 0 10px;
+  
+    transition: all .25s;
+  }
+  .content--delete_account:hover {
+    padding: 0 10px 0 10px;
+    color: #ef0a02;
+    background-color: #fbfffe;
+
+    transition: all .25s;
+  }
+  .content--delete-confirm {
+    padding: 17px;
+  }
+  .content--delete-confirm-info {
+    font-size: 17px;
+  }
+  .content--delete--buttons {
+    margin-top: 10px;
+  }
+  .buttons-delete:hover, .buttons-cancel:hover {
+    padding: 0 10px;
+    background-color: #fbfffe;
+  }
+  .buttons-cancel:hover {
+    color: #010001;
+  }
+  .buttons-delete:hover {
+    color: #ef0a02;
+  }
+}

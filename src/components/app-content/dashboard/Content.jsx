@@ -40,7 +40,10 @@ export default class Content extends Component {
           'Authorization': this.props.token
         }
       })
-      .then(res => this.setState({ timetable: res.data }))
+      .then(res => {
+        console.log('setting timetable')
+        this.setState({ timetable: res.data })
+      })
       .catch(err => console.log(err.response.data))
   }
 

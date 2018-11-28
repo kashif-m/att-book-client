@@ -18,7 +18,7 @@ export default class AppRouter extends Component {
       <Router>
         <Switch>
           <Route exact path="/" component={App} />
-          <Route path="/password-reset/update/:token" component={PasswordReset} />
+          <Route exact path="/password-reset/update/:token" component={PasswordReset} />
           <Route component={NotFound} />
         </Switch>
       </Router>

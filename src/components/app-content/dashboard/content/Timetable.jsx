@@ -21,9 +21,9 @@ export default class Timetable extends Component {
     }  
   }
 
-  componentDidUpdate(prevProps) {
-    const newTT = JSON.stringify(this.props.timetable)
+  componentDidUpdate(prevProps, prevState) {
     const current = JSON.stringify(prevProps.timetable)
+    const newTT = JSON.stringify(this.props.timetable)
     if((newTT !== current) || (newTT === current && this.state.timetable === {})) {
       this.saveTimetable()
     }

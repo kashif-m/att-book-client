@@ -17,7 +17,17 @@ export default class Profile extends Component {
     }
   }
 
+  componentDidUpdate() {
+    console.log('updated')
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
+    
+    const newTT = JSON.stringify(nextProps.timetable)
+    const current = JSON.stringify(this.props.timetable)
+    if((newTT !== current) || (newTT === current && this.state.timetable === {}))
+      return true
+
     if(nextState.confirm !== this.state.confirm)
       return true
     if(nextState.show === this.state.show)
