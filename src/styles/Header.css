@@ -35,6 +35,9 @@
 
 /* media queries */
 @media only screen and (max-width: 500px) {
+  .header-wrap {
+    padding: 10px 0;
+  }
   .logo, .power {
     height: 30px;
   }

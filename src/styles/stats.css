@@ -26,6 +26,8 @@
   grid-auto-flow: row;
   width: min-content;
   font-family: PTSansBold;
+
+  overflow: hidden;
 }
 .no--logs {
   font-family: openSansLight;
@@ -57,6 +59,11 @@
 
 .overall--content {
   padding: 20px;
+  max-height: 40vh;
+  overflow-y: scroll;
+  width: 100%;
+  /* padding-left: 1px; */
+  box-sizing: content-box;
 }
 .overall--data {
   display: grid;
@@ -93,10 +100,73 @@
 
   font-size: 30px;
 }
+.footer--present, .footer--pending, .footer--absent {
+  padding: 2px 20px;
+  color: #fbfffe;
+  border-radius: 3px;
+}
+.footer--present {
+  background-color: #5a8908;
+}
+.footer--pending {
+  background-color: #faa613;
+}
+.footer--absent {
+  background-color: #ef0a02;
+}
 .footer--total {
   grid-column: 2 / 3;
 }
 .overall--footer > * {
   justify-self: center;
   align-self: center;
+}
+
+
+
+@media only screen and (max-width: 500px) {
+  .stats--content {
+    padding: 0;
+    width: calc(100vw - 10px);
+  }
+  .overall {
+    padding: 20px 0 0 0;
+    width: 100%;
+
+    grid-auto-rows: auto;
+  }
+  .overall--header {
+    padding: 0;
+    max-width: calc(100vw - 10px);
+
+    grid-auto-columns: 1fr;
+  }
+  .overall--header > * {
+    font-size: 15px;
+  }
+  .overall--content {
+    padding: 0;
+    max-width: calc(100vw - 10px);
+    max-height: 45vh;
+
+    overflow-y: scroll;
+  }
+  .overall--data {
+    grid-auto-columns: 1fr;
+  }
+  .overall--data > * {
+    font-size: 15px !important;
+  }
+  .overall--subject {
+    margin: 0;
+    justify-self: center;
+  }
+  .overall--footer {
+    margin-top: 10px;
+    padding: 10px 0 0 0;
+    font-size: 16px;
+  }
+  .footer--present, .footer--pending, .footer--absent {
+    padding: 2px 10px;
+  }
 }

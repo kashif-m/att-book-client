@@ -456,12 +456,15 @@ transition: all .5s;
   }
 
   .row--subject--popup {
-    padding: 4px !important;
+    padding: 10px !important;
     width: 100%;
     position: absolute;
+
+    top: 0;
+    left: -15px;
   }
   .row--subject--popup > .button-continue {
-    margin: 0;
+    margin-top: 20px;
   }
   .popup--subject {
     font-size: 30px;
